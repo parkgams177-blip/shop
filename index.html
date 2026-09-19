@@ -166,21 +166,53 @@
       color: #8a7565;
     }
 
-    /* 오른쪽 아래 장바구니 버튼 */
+    /* 오른쪽 위 장바구니 아이콘 */
     .cart-button {
       position: fixed;  /* 스크롤해도 같은 자리에 */
-      right: 20px;
-      bottom: 20px;
-      font-size: 18px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      top: 16px;
+      right: 16px;
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      border-radius: 50%;  /* 동그랗게 */
+      background-color: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       z-index: 10;
+    }
+
+    .cart-button:hover {
+      background-color: #fff1e6;
+    }
+
+    .cart-button svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    /* 아이콘 위 빨간 숫자 */
+    .cart-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 5px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      background-color: #e5484d;
+      color: white;
+      font-size: 12px;
+      line-height: 20px;
     }
 
     /* 장바구니 창 */
     .cart-box {
       position: fixed;
-      right: 20px;
-      bottom: 85px;
+      right: 16px;
+      top: 80px;
       width: 300px;
       max-width: calc(100% - 40px);
       box-sizing: border-box;
@@ -247,7 +279,7 @@
     .toast {
       position: fixed;
       left: 50%;
-      top: 20px;
+      bottom: 30px;
       transform: translateX(-50%);
       width: max-content;
       max-width: 90%;
@@ -499,8 +531,15 @@
     <p>© 2026 프리마켓</p>
   </footer>
 
-  <!-- 오른쪽 아래 장바구니 버튼 -->
-  <button class="cart-button" onclick="toggleCart()">🛒 <span id="cart-count">0</span></button>
+  <!-- 오른쪽 위 장바구니 아이콘 -->
+  <button class="cart-button" onclick="toggleCart()" aria-label="장바구니">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#ff8a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="9" cy="21" r="1"></circle>
+      <circle cx="20" cy="21" r="1"></circle>
+      <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
+    </svg>
+    <span class="cart-count" id="cart-count" hidden>0</span>
+  </button>
 
   <!-- 장바구니 창 (처음엔 숨김) -->
   <div class="cart-box" id="cart-box" hidden>
@@ -579,6 +618,7 @@
       document.getElementById("cart-list").innerHTML = html;
       document.getElementById("cart-total").textContent = total.toLocaleString();
       document.getElementById("cart-count").textContent = count;
+      document.getElementById("cart-count").hidden = (count === 0);  // 0개면 숫자 숨기기
     }
 
     // 장바구니 창 열기/닫기
