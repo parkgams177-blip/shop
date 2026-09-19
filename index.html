@@ -253,6 +253,19 @@
       z-index: 35;
     }
 
+    /* 제목 아래 "홍길동 님 환영해요 [로그아웃]" 줄 */
+    .user-bar {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .logout-button {
+      margin-left: 6px;
+      padding: 4px 12px;
+      font-size: 13px;
+      background-color: #c9bbb0;
+    }
+
     .login-help {
       font-size: 14px;
       color: #8a7565;
@@ -575,6 +588,12 @@
   <header>
     <h1>🚗 프리마켓</h1>
     <p>내 차를 더 편안하고 귀엽게, 자동차 용품 전문몰</p>
+
+    <!-- 로그인했을 때만 보이는 인사 + 로그아웃 버튼 -->
+    <div class="user-bar" id="user-bar" hidden>
+      👋 <b id="user-bar-name"></b> 님 환영해요
+      <button class="logout-button" onclick="logOut()">로그아웃</button>
+    </div>
   </header>
 
   <!-- 메뉴: 누르면 그 카테고리 상품만 보여줌 -->
@@ -1016,10 +1035,12 @@
       document.getElementById("login-form").hidden = (user !== null);
       document.getElementById("login-done").hidden = (user === null);
       document.getElementById("account-button").classList.toggle("logged-in", user !== null);
+      document.getElementById("user-bar").hidden = (user === null);
       if (user) {
         // 가입할 때 넣은 이름이 있으면 이름, 없으면 이메일로 인사
         let name = user.user_metadata && user.user_metadata.name;
         document.getElementById("user-email").textContent = name || user.email;
+        document.getElementById("user-bar-name").textContent = name || user.email;
       }
     }
 
@@ -1159,7 +1180,8 @@
       cart = [];  // 이 기기에 남은 장바구니 지우기
       showCart();
       showLoginState();
-      toggleLogin();
+      // 로그인 창이 열려 있으면 닫기
+      if (!document.getElementById("login-box").hidden) toggleLogin();
       showToast("로그아웃했어요");
     }
 
