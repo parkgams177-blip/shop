@@ -257,6 +257,37 @@
       line-height: 1.5;
     }
 
+    .login-label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* 가입/로그인 결과 문구 */
+    .login-message {
+      margin: 12px 0 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .login-message.ok {
+      background-color: #e7f7ec;
+      color: #1f7a3a;
+    }
+
+    .login-message.error {
+      background-color: #fde8e8;
+      color: #c0392b;
+    }
+
+    .login-message.wait {
+      background-color: #fff1e6;
+      color: #8a7565;
+    }
+
     .login-box input {
       width: 100%;
       box-sizing: border-box;
@@ -720,19 +751,23 @@
   <!-- 로그인 창 -->
   <div class="login-box" id="login-box" hidden>
     <div class="cart-head">
-      <h3>👤 로그인</h3>
+      <h3>👤 로그인 · 가입</h3>
       <button class="close-button" onclick="toggleLogin()">✕</button>
     </div>
 
     <!-- 로그인 전에 보이는 부분 -->
     <div id="login-form">
       <p class="login-help">로그인하면 컴퓨터와 핸드폰에서 같은 장바구니를 볼 수 있어요.</p>
-      <input type="email" id="email" placeholder="이메일">
-      <input type="password" id="password" placeholder="비밀번호 (6자 이상)">
+      <label class="login-label" for="email">이메일</label>
+      <input type="email" id="email" placeholder="name@example.com">
+      <label class="login-label" for="password">비밀번호</label>
+      <input type="password" id="password" placeholder="6자 이상">
       <div class="cart-actions">
-        <button class="gray" onclick="signUp()">회원가입</button>
+        <button class="gray" onclick="signUp()">가입</button>
         <button onclick="logIn()">로그인</button>
       </div>
+      <!-- 성공/실패 안내 문구가 나오는 곳 -->
+      <p class="login-message" id="login-message" hidden></p>
     </div>
 
     <!-- 로그인 후에 보이는 부분 -->
@@ -912,41 +947,99 @@
       }
     }
 
-    // 회원가입
+    // 입력 창 아래에 안내 문구 보여주기 (type: "ok", "error", "wait")
+    function showLoginMessage(text, type) {
+      let box = document.getElementById("login-message");
+      box.textContent = text;
+      box.className = "login-message " + type;
+      box.hidden = false;
+    }
+
+    // 입력한 이메일/비밀번호 검사 (문제가 있으면 한국어 문구, 없으면 "")
+    function checkInput(email, password) {
+      if (email === "") return "이메일을 입력해 주세요.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "이메일 형식이 올바르지 않습니다. (예: name@example.com)";
+      if (password === "") return "비밀번호를 입력해 주세요.";
+      if (password.length < 6) return "비밀번호는 6자 이상이어야 합니다.";
+      return "";
+    }
+
+    // Supabase가 보낸 영어 오류를 한국어로 바꾸기
+    function koreanError(error) {
+      let messages = {
+        email_address_invalid: "이메일 형식이 올바르지 않습니다.",
+        email_address_not_authorized: "이 이메일로는 인증 메일을 보낼 수 없습니다. (Supabase 기본 메일 서버는 프로젝트 팀원 이메일로만 발송돼요)",
+        user_already_exists: "이미 가입된 이메일입니다. 로그인해 주세요.",
+        email_exists: "이미 가입된 이메일입니다. 로그인해 주세요.",
+        weak_password: "비밀번호가 너무 약합니다. 더 길고 복잡하게 만들어 주세요.",
+        signup_disabled: "지금은 회원가입이 막혀 있습니다.",
+        over_email_send_rate_limit: "인증 메일을 너무 많이 보냈습니다. 잠시 후(최대 1시간) 다시 시도해 주세요.",
+        over_request_rate_limit: "요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.",
+        email_not_confirmed: "이메일 인증이 아직 안 됐습니다. 메일함(스팸함 포함)의 인증 링크를 눌러 주세요.",
+        invalid_credentials: "이메일 또는 비밀번호가 틀렸습니다.",
+        user_not_found: "가입되지 않은 이메일입니다."
+      };
+      if (messages[error.code]) return messages[error.code];
+      if (error.name === "AuthRetryableFetchError" || error.message === "Failed to fetch") {
+        return "서버에 연결하지 못했습니다. 인터넷 연결을 확인해 주세요.";
+      }
+      return "알 수 없는 문제가 생겼습니다. (" + error.message + ")";
+    }
+
+    // 가입
     async function signUp() {
-      if (!db) return alert("지금은 로그인 서버에 연결할 수 없어요.");
-      let email = document.getElementById("email").value;
+      if (!db) return showLoginMessage("지금은 로그인 서버에 연결할 수 없습니다.", "error");
+      let email = document.getElementById("email").value.trim();
       let password = document.getElementById("password").value;
+
+      let problem = checkInput(email, password);
+      if (problem) return showLoginMessage("❌ 가입 실패: " + problem, "error");
+
+      showLoginMessage("가입하는 중...", "wait");
       const { data, error } = await db.auth.signUp({
         email: email,
         password: password,
         options: { emailRedirectTo: location.origin + location.pathname }
       });
+
       if (error) {
-        alert("회원가입 실패: " + error.message);
+        showLoginMessage("❌ 가입 실패: " + koreanError(error), "error");
         return;
       }
+
+      // 이미 가입된 이메일이면 Supabase가 오류 대신 빈 계정을 돌려줌
+      if (data.user && data.user.identities && data.user.identities.length === 0) {
+        showLoginMessage("❌ 가입 실패: 이미 가입된 이메일입니다. 로그인해 주세요.", "error");
+        return;
+      }
+
       if (data.session) {
-        // 메일 확인 없이 바로 로그인되는 설정일 때
+        // 메일 인증 없이 바로 로그인되는 설정일 때
         user = data.user;
         showLoginState();
         loadServerCart(true);
-        showToast("회원가입 완료! 🎉");
+        showLoginMessage("✅ 가입이 완료되었습니다!", "ok");
       } else {
-        alert("📧 " + email + " 로 확인 메일을 보냈어요.\n메일의 링크를 누른 뒤 로그인해 주세요.");
+        showLoginMessage("✅ 가입이 완료되었습니다! " + email + " 로 보낸 인증 메일의 링크를 누른 뒤 로그인해 주세요.", "ok");
       }
     }
 
     // 로그인
     async function logIn() {
-      if (!db) return alert("지금은 로그인 서버에 연결할 수 없어요.");
-      let email = document.getElementById("email").value;
+      if (!db) return showLoginMessage("지금은 로그인 서버에 연결할 수 없습니다.", "error");
+      let email = document.getElementById("email").value.trim();
       let password = document.getElementById("password").value;
+
+      let problem = checkInput(email, password);
+      if (problem) return showLoginMessage("❌ 로그인 실패: " + problem, "error");
+
+      showLoginMessage("로그인하는 중...", "wait");
       const { data, error } = await db.auth.signInWithPassword({ email: email, password: password });
       if (error) {
-        alert("로그인 실패: " + error.message);
+        showLoginMessage("❌ 로그인 실패: " + koreanError(error), "error");
         return;
       }
+      document.getElementById("login-message").hidden = true;
       user = data.user;
       showLoginState();
       toggleLogin();
