@@ -1168,6 +1168,13 @@
         .replace(/'/g, "&#39;");
     }
 
+    // 할인율 계산: (원래 가격 - 판매가) ÷ 원래 가격 × 100 을 반올림
+    // 예) 16,000원 → 11,200원 이면 30%
+    function discountRate(originalPrice, price) {
+      if (!originalPrice || price >= originalPrice) return 0;  // 할인이 없으면 0
+      return Math.round((originalPrice - price) * 100 / originalPrice);
+    }
+
     // Supabase의 products 표에서 상품 가져오기
     async function loadProducts() {
       let area = document.getElementById("product-area");
@@ -1219,13 +1226,22 @@
         for (let i = 0; i < products.length; i++) {
           let p = products[i];
           if (p.category !== c.code) continue;
+
+          // 할인율은 가격으로 자동 계산 (할인이 없으면 0)
+          let rate = discountRate(p.original_price, p.price);
+          let oldPriceHtml = "";
+          let discountHtml = "";
+          if (rate > 0) {
+            oldPriceHtml = "<div class='old-price'>" + p.original_price.toLocaleString() + "원</div>";
+            discountHtml = "<span class='discount'>" + rate + "%</span>";
+          }
+
           areaHtml +=
             "<div class='card'>" +
               "<img src='" + escapeHtml(p.image_url) + "' alt='" + escapeHtml(p.name) + "' loading='lazy'>" +
               "<h3>" + escapeHtml(p.name) + "</h3>" +
-              "<div class='old-price'>" + p.original_price.toLocaleString() + "원</div>" +
-              "<div class='price'><span class='discount'>" + p.discount_rate + "%</span>" +
-                p.price.toLocaleString() + "원</div>" +
+              oldPriceHtml +
+              "<div class='price'>" + discountHtml + p.price.toLocaleString() + "원</div>" +
               "<button onclick='addProduct(" + i + ")'>🛒 담기</button>" +
             "</div>";
         }
