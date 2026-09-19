@@ -70,6 +70,23 @@
       color: white;
     }
 
+    /* 메뉴 옆 상품 개수 */
+    nav .count {
+      font-size: 12px;
+      color: #ff8a3d;
+    }
+
+    nav a.active .count {
+      color: white;
+    }
+
+    /* 카테고리 제목 옆 상품 개수 */
+    .products h2 .count {
+      font-size: 16px;
+      font-weight: normal;
+      color: #8a7565;
+    }
+
     /* 큰 배너 */
     .banner {
       margin: 30px 20px;
@@ -429,10 +446,10 @@
 
   <!-- 메뉴: 누르면 그 카테고리 상품만 보여줌 -->
   <nav>
-    <a href="#" class="menu active" id="menu-all" onclick="showCategory('all'); return false;">전체상품</a>
-    <a href="#" class="menu" id="menu-wash" onclick="showCategory('wash'); return false;">세차용품</a>
-    <a href="#" class="menu" id="menu-inside" onclick="showCategory('inside'); return false;">실내용품</a>
-    <a href="#" class="menu" id="menu-safety" onclick="showCategory('safety'); return false;">안전·전자용품</a>
+    <a href="#" class="menu active" id="menu-all" onclick="showCategory('all'); return false;">전체상품 <span class="count"></span></a>
+    <a href="#" class="menu" id="menu-wash" onclick="showCategory('wash'); return false;">세차용품 <span class="count"></span></a>
+    <a href="#" class="menu" id="menu-inside" onclick="showCategory('inside'); return false;">실내용품 <span class="count"></span></a>
+    <a href="#" class="menu" id="menu-safety" onclick="showCategory('safety'); return false;">안전·전자용품 <span class="count"></span></a>
     <a href="#contact">고객센터</a>
   </nav>
 
@@ -444,7 +461,7 @@
 
   <!-- 카테고리 1: 세차용품 -->
   <section class="products" id="wash">
-    <h2>🧽 세차용품</h2>
+    <h2>🧽 세차용품 <span class="count"></span></h2>
 
     <div class="card-list">
       <div class="card">
@@ -491,7 +508,7 @@
 
   <!-- 카테고리 2: 실내용품 -->
   <section class="products" id="inside">
-    <h2>🧸 실내용품</h2>
+    <h2>🧸 실내용품 <span class="count"></span></h2>
 
     <div class="card-list">
       <div class="card">
@@ -538,7 +555,7 @@
 
   <!-- 카테고리 3: 안전·전자용품 -->
   <section class="products" id="safety">
-    <h2>🔦 안전·전자용품</h2>
+    <h2>🔦 안전·전자용품 <span class="count"></span></h2>
 
     <div class="card-list">
       <div class="card">
@@ -739,8 +756,22 @@
       }, 1500);
     }
 
-    // 처음 열었을 때 빈 장바구니 표시
+    // 카테고리마다 상품 카드 개수를 세서 표시
+    function showCounts() {
+      let total = 0;
+      let sections = document.querySelectorAll(".products");
+      for (let section of sections) {
+        let n = section.querySelectorAll(".card").length;
+        total = total + n;
+        section.querySelector("h2 .count").textContent = n + "개";
+        document.querySelector("#menu-" + section.id + " .count").textContent = n;
+      }
+      document.querySelector("#menu-all .count").textContent = total;
+    }
+
+    // 처음 열었을 때 실행
     showCart();
+    showCounts();
   </script>
 
 </body>
