@@ -234,20 +234,32 @@
     /* 로그인하면 👤 아이콘 자리에 나오는 로그아웃 버튼 */
     .logout-top {
       position: fixed;
-      top: 16px;
-      right: 78px;
-      height: 52px;
-      padding: 0 18px;
-      border-radius: 26px;
-      background-color: white;
-      color: #ff8a3d;
-      font-size: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      top: 24px;         /* 장바구니 아이콘(52px)과 가운데 높이 맞춤 */
+      right: 80px;
+      height: 36px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #e3d8ce;
+      border-radius: 18px;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #8a7565;
+      font-size: 13px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
       z-index: 10;
     }
 
+    .logout-top svg {
+      width: 15px;
+      height: 15px;
+    }
+
     .logout-top:hover {
-      background-color: #fff1e6;
+      background-color: white;
+      border-color: #ff8a3d;
+      color: #ff8a3d;
     }
 
     /* 로그인 창 (화면 가운데) */
@@ -518,11 +530,11 @@
       }
 
       .logout-top {
-        top: 12px;
-        right: 56px;
-        height: 40px;
-        padding: 0 12px;
-        font-size: 13px;
+        top: 16px;       /* 장바구니 아이콘(40px)과 가운데 높이 맞춤 */
+        right: 58px;
+        height: 32px;
+        padding: 0 11px;
+        font-size: 12px;
       }
 
       .cart-button svg,
@@ -805,7 +817,14 @@
   </button>
 
   <!-- 로그인하면 👤 아이콘 대신 보이는 로그아웃 버튼 -->
-  <button class="logout-top" id="logout-top" onclick="logOut()" hidden>로그아웃</button>
+  <button class="logout-top" id="logout-top" onclick="logOut()" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+      <polyline points="16 17 21 12 16 7"></polyline>
+      <line x1="21" y1="12" x2="9" y2="12"></line>
+    </svg>
+    로그아웃
+  </button>
 
   <!-- 로그인 창 뒤 어두운 배경 -->
   <div class="overlay" id="login-overlay" onclick="toggleLogin()"></div>
