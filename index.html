@@ -11,12 +11,18 @@
       scroll-behavior: smooth;
     }
 
-    /* 전체 기본 설정 */
+    /* 전체 기본 설정 + 배경 사진 */
     body {
       margin: 0;
       font-family: "Malgun Gothic", sans-serif;
-      background-color: #fff8f0;
       color: #4a3b30;
+      /* 사진 위에 연한 크림색을 덮어서 글씨가 잘 보이게 함 */
+      background-image:
+        linear-gradient(rgba(255, 248, 240, 0.8), rgba(255, 248, 240, 0.8)),
+        url("https://images.unsplash.com/photo-1506664958676-205b41a88d0d?w=1920&q=80");
+      background-size: cover;
+      background-attachment: fixed;  /* 스크롤해도 배경은 그대로 */
+      background-color: #fff8f0;
     }
 
     /* 맨 위 (쇼핑몰 이름) */
@@ -111,8 +117,12 @@
       box-shadow: 0 4px 12px rgba(255, 138, 61, 0.2);
     }
 
-    .card .emoji {
-      font-size: 50px;
+    /* 상품 사진 */
+    .card img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;  /* 사진 비율이 달라도 꽉 차게 */
+      border-radius: 12px;
     }
 
     .card h3 {
@@ -150,6 +160,10 @@
       background-color: #ffe6d1;
       color: #8a7565;
     }
+
+    footer a {
+      color: #8a7565;
+    }
   </style>
 </head>
 <body>
@@ -180,15 +194,15 @@
 
     <div class="card-list">
       <div class="card">
-        <div class="emoji">🧽</div>
-        <h3>극세사 세차 장갑</h3>
+        <img src="https://images.unsplash.com/photo-1694678505383-676d78ea3b96?w=400&h=300&fit=crop" alt="세차 스펀지">
+        <h3>극세사 세차 스펀지</h3>
         <div class="old-price">12,000원</div>
         <div class="price"><span class="discount">26%</span>8,900원</div>
-        <button onclick="addCart('극세사 세차 장갑')">장바구니 담기</button>
+        <button onclick="addCart('극세사 세차 스펀지')">장바구니 담기</button>
       </div>
 
       <div class="card">
-        <div class="emoji">🧼</div>
+        <img src="https://images.unsplash.com/photo-1633014041037-f5446fb4ce99?w=400&h=300&fit=crop" alt="거품 카샴푸">
         <h3>거품 카샴푸</h3>
         <div class="old-price">16,000원</div>
         <div class="price"><span class="discount">30%</span>11,200원</div>
@@ -196,15 +210,15 @@
       </div>
 
       <div class="card">
-        <div class="emoji">🚿</div>
-        <h3>고압 세차 노즐</h3>
+        <img src="https://images.unsplash.com/photo-1565689876697-e467b6c54da2?w=400&h=300&fit=crop" alt="휠 세척 브러시">
+        <h3>휠 세척 브러시</h3>
         <div class="old-price">20,000원</div>
         <div class="price"><span class="discount">26%</span>14,900원</div>
-        <button onclick="addCart('고압 세차 노즐')">장바구니 담기</button>
+        <button onclick="addCart('휠 세척 브러시')">장바구니 담기</button>
       </div>
 
       <div class="card">
-        <div class="emoji">💧</div>
+        <img src="https://images.unsplash.com/photo-1652994994973-05db53f13034?w=400&h=300&fit=crop" alt="유리 발수 코팅제">
         <h3>유리 발수 코팅제</h3>
         <div class="old-price">14,000원</div>
         <div class="price"><span class="discount">30%</span>9,800원</div>
@@ -212,7 +226,7 @@
       </div>
 
       <div class="card">
-        <div class="emoji">🧻</div>
+        <img src="https://images.unsplash.com/photo-1761934658331-2e00b20dc6c6?w=400&h=300&fit=crop" alt="흡수 드라잉 타월">
         <h3>흡수 드라잉 타월</h3>
         <div class="old-price">18,000원</div>
         <div class="price"><span class="discount">25%</span>13,500원</div>
@@ -227,31 +241,31 @@
 
     <div class="card-list">
       <div class="card">
-        <div class="emoji">🌼</div>
-        <h3>꽃 모양 방향제</h3>
+        <img src="https://images.unsplash.com/photo-1768983298275-942312c9b446?w=400&h=300&fit=crop" alt="차량용 방향제">
+        <h3>우드캡 차량용 방향제</h3>
         <div class="old-price">15,000원</div>
         <div class="price"><span class="discount">27%</span>10,900원</div>
-        <button onclick="addCart('꽃 모양 방향제')">장바구니 담기</button>
+        <button onclick="addCart('우드캡 차량용 방향제')">장바구니 담기</button>
       </div>
 
       <div class="card">
-        <div class="emoji">🧸</div>
-        <h3>곰돌이 목쿠션</h3>
+        <img src="https://images.unsplash.com/photo-1654801816121-2beac3d9af53?w=400&h=300&fit=crop" alt="목쿠션">
+        <h3>폭신 목쿠션</h3>
         <div class="old-price">22,000원</div>
         <div class="price"><span class="discount">30%</span>15,400원</div>
-        <button onclick="addCart('곰돌이 목쿠션')">장바구니 담기</button>
+        <button onclick="addCart('폭신 목쿠션')">장바구니 담기</button>
       </div>
 
       <div class="card">
-        <div class="emoji">🗑️</div>
-        <h3>차량용 미니 휴지통</h3>
+        <img src="https://images.unsplash.com/photo-1758347965959-0d3601b55fe5?w=400&h=300&fit=crop" alt="차량용 컵홀더">
+        <h3>차량용 컵홀더</h3>
         <div class="old-price">9,000원</div>
         <div class="price"><span class="discount">23%</span>6,900원</div>
-        <button onclick="addCart('차량용 미니 휴지통')">장바구니 담기</button>
+        <button onclick="addCart('차량용 컵홀더')">장바구니 담기</button>
       </div>
 
       <div class="card">
-        <div class="emoji">🧺</div>
+        <img src="https://images.unsplash.com/photo-1688054004445-7c9108eb4005?w=400&h=300&fit=crop" alt="트렁크 정리함">
         <h3>트렁크 정리함</h3>
         <div class="old-price">29,000원</div>
         <div class="price"><span class="discount">24%</span>21,900원</div>
@@ -259,11 +273,11 @@
       </div>
 
       <div class="card">
-        <div class="emoji">💺</div>
-        <h3>메모리폼 등받이 쿠션</h3>
+        <img src="https://images.unsplash.com/photo-1605647381739-9bba88b1c5d1?w=400&h=300&fit=crop" alt="가죽 시트 커버">
+        <h3>가죽 시트 커버</h3>
         <div class="old-price">35,000원</div>
         <div class="price"><span class="discount">30%</span>24,500원</div>
-        <button onclick="addCart('메모리폼 등받이 쿠션')">장바구니 담기</button>
+        <button onclick="addCart('가죽 시트 커버')">장바구니 담기</button>
       </div>
     </div>
   </section>
@@ -274,15 +288,15 @@
 
     <div class="card-list">
       <div class="card">
-        <div class="emoji">📱</div>
-        <h3>자석 휴대폰 거치대</h3>
+        <img src="https://images.unsplash.com/photo-1717007873182-7cc5d673cbff?w=400&h=300&fit=crop" alt="휴대폰 거치대">
+        <h3>휴대폰 거치대</h3>
         <div class="old-price">25,000원</div>
         <div class="price"><span class="discount">30%</span>17,500원</div>
-        <button onclick="addCart('자석 휴대폰 거치대')">장바구니 담기</button>
+        <button onclick="addCart('휴대폰 거치대')">장바구니 담기</button>
       </div>
 
       <div class="card">
-        <div class="emoji">🔦</div>
+        <img src="https://images.unsplash.com/photo-1561916960-dea3b9b0355a?w=400&h=300&fit=crop" alt="LED 손전등">
         <h3>비상용 LED 손전등</h3>
         <div class="old-price">18,000원</div>
         <div class="price"><span class="discount">28%</span>12,900원</div>
@@ -290,15 +304,15 @@
       </div>
 
       <div class="card">
-        <div class="emoji">🔌</div>
-        <h3>차량용 고속 충전기</h3>
+        <img src="https://images.unsplash.com/photo-1572721546624-05bf65ad7679?w=400&h=300&fit=crop" alt="고속 충전 케이블">
+        <h3>고속 충전 케이블</h3>
         <div class="old-price">19,000원</div>
         <div class="price"><span class="discount">27%</span>13,900원</div>
-        <button onclick="addCart('차량용 고속 충전기')">장바구니 담기</button>
+        <button onclick="addCart('고속 충전 케이블')">장바구니 담기</button>
       </div>
 
       <div class="card">
-        <div class="emoji">📷</div>
+        <img src="https://images.unsplash.com/photo-1765959106936-851735565c12?w=400&h=300&fit=crop" alt="블랙박스">
         <h3>2채널 블랙박스</h3>
         <div class="old-price">159,000원</div>
         <div class="price"><span class="discount">25%</span>119,000원</div>
@@ -306,7 +320,7 @@
       </div>
 
       <div class="card">
-        <div class="emoji">🧯</div>
+        <img src="https://images.unsplash.com/photo-1625958936686-a9343dc35b5b?w=400&h=300&fit=crop" alt="차량용 소화기">
         <h3>차량용 소화기</h3>
         <div class="old-price">32,000원</div>
         <div class="price"><span class="discount">22%</span>24,900원</div>
@@ -319,6 +333,7 @@
   <footer id="contact">
     <p>📞 고객센터 1234-5678 (평일 10:00 ~ 18:00)</p>
     <p>✉️ help@freemarket.com</p>
+    <p>사진 출처: <a href="https://unsplash.com">Unsplash</a> (무료 사용 가능)</p>
     <p>© 2026 프리마켓</p>
   </footer>
 
