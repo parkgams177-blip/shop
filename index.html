@@ -166,6 +166,99 @@
       color: #8a7565;
     }
 
+    /* 오른쪽 아래 장바구니 버튼 */
+    .cart-button {
+      position: fixed;  /* 스크롤해도 같은 자리에 */
+      right: 20px;
+      bottom: 20px;
+      font-size: 18px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+
+    /* 장바구니 창 */
+    .cart-box {
+      position: fixed;
+      right: 20px;
+      bottom: 85px;
+      width: 300px;
+      max-width: calc(100% - 40px);
+      box-sizing: border-box;
+      padding: 20px;
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+
+    .cart-box h3 {
+      margin: 0 0 10px;
+    }
+
+    .cart-box ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .cart-box li {
+      padding: 8px 0;
+      border-bottom: 1px dashed #ffd2ad;
+      font-size: 14px;
+    }
+
+    .cart-box .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .cart-box .small {
+      padding: 2px 10px;
+      font-size: 14px;
+    }
+
+    .cart-total {
+      text-align: right;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ff8a3d;
+    }
+
+    .cart-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .cart-actions button {
+      flex: 1;
+      padding: 10px 0;
+      font-size: 14px;
+    }
+
+    .cart-actions .gray {
+      background-color: #c9bbb0;
+    }
+
+    /* 담았을 때 잠깐 뜨는 안내 문구 */
+    .toast {
+      position: fixed;
+      left: 50%;
+      top: 20px;
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: 90%;
+      padding: 10px 18px;
+      background-color: #4a3b30;
+      color: white;
+      border-radius: 20px;
+      font-size: 14px;
+      z-index: 20;
+    }
+
     /* ===== 핸드폰 화면 (폭 600px 이하) ===== */
     @media (max-width: 600px) {
       body {
@@ -267,7 +360,7 @@
         <h3>극세사 세차 스펀지</h3>
         <div class="old-price">12,000원</div>
         <div class="price"><span class="discount">26%</span>8,900원</div>
-        <button onclick="addCart('극세사 세차 스펀지')">장바구니 담기</button>
+        <button onclick="addCart('극세사 세차 스펀지', 8900)">🛒 담기</button>
       </div>
 
       <div class="card">
@@ -275,7 +368,7 @@
         <h3>거품 카샴푸</h3>
         <div class="old-price">16,000원</div>
         <div class="price"><span class="discount">30%</span>11,200원</div>
-        <button onclick="addCart('거품 카샴푸')">장바구니 담기</button>
+        <button onclick="addCart('거품 카샴푸', 11200)">🛒 담기</button>
       </div>
 
       <div class="card">
@@ -283,7 +376,7 @@
         <h3>휠 세척 브러시</h3>
         <div class="old-price">20,000원</div>
         <div class="price"><span class="discount">26%</span>14,900원</div>
-        <button onclick="addCart('휠 세척 브러시')">장바구니 담기</button>
+        <button onclick="addCart('휠 세척 브러시', 14900)">🛒 담기</button>
       </div>
 
       <div class="card">
@@ -291,7 +384,7 @@
         <h3>유리 발수 코팅제</h3>
         <div class="old-price">14,000원</div>
         <div class="price"><span class="discount">30%</span>9,800원</div>
-        <button onclick="addCart('유리 발수 코팅제')">장바구니 담기</button>
+        <button onclick="addCart('유리 발수 코팅제', 9800)">🛒 담기</button>
       </div>
 
       <div class="card">
@@ -299,7 +392,7 @@
         <h3>흡수 드라잉 타월</h3>
         <div class="old-price">18,000원</div>
         <div class="price"><span class="discount">25%</span>13,500원</div>
-        <button onclick="addCart('흡수 드라잉 타월')">장바구니 담기</button>
+        <button onclick="addCart('흡수 드라잉 타월', 13500)">🛒 담기</button>
       </div>
     </div>
   </section>
@@ -314,7 +407,7 @@
         <h3>우드캡 차량용 방향제</h3>
         <div class="old-price">15,000원</div>
         <div class="price"><span class="discount">27%</span>10,900원</div>
-        <button onclick="addCart('우드캡 차량용 방향제')">장바구니 담기</button>
+        <button onclick="addCart('우드캡 차량용 방향제', 10900)">🛒 담기</button>
       </div>
 
       <div class="card">
@@ -322,7 +415,7 @@
         <h3>폭신 목쿠션</h3>
         <div class="old-price">22,000원</div>
         <div class="price"><span class="discount">30%</span>15,400원</div>
-        <button onclick="addCart('폭신 목쿠션')">장바구니 담기</button>
+        <button onclick="addCart('폭신 목쿠션', 15400)">🛒 담기</button>
       </div>
 
       <div class="card">
@@ -330,7 +423,7 @@
         <h3>차량용 컵홀더</h3>
         <div class="old-price">9,000원</div>
         <div class="price"><span class="discount">23%</span>6,900원</div>
-        <button onclick="addCart('차량용 컵홀더')">장바구니 담기</button>
+        <button onclick="addCart('차량용 컵홀더', 6900)">🛒 담기</button>
       </div>
 
       <div class="card">
@@ -338,7 +431,7 @@
         <h3>트렁크 정리함</h3>
         <div class="old-price">29,000원</div>
         <div class="price"><span class="discount">24%</span>21,900원</div>
-        <button onclick="addCart('트렁크 정리함')">장바구니 담기</button>
+        <button onclick="addCart('트렁크 정리함', 21900)">🛒 담기</button>
       </div>
 
       <div class="card">
@@ -346,7 +439,7 @@
         <h3>가죽 시트 커버</h3>
         <div class="old-price">35,000원</div>
         <div class="price"><span class="discount">30%</span>24,500원</div>
-        <button onclick="addCart('가죽 시트 커버')">장바구니 담기</button>
+        <button onclick="addCart('가죽 시트 커버', 24500)">🛒 담기</button>
       </div>
     </div>
   </section>
@@ -361,7 +454,7 @@
         <h3>휴대폰 거치대</h3>
         <div class="old-price">25,000원</div>
         <div class="price"><span class="discount">30%</span>17,500원</div>
-        <button onclick="addCart('휴대폰 거치대')">장바구니 담기</button>
+        <button onclick="addCart('휴대폰 거치대', 17500)">🛒 담기</button>
       </div>
 
       <div class="card">
@@ -369,7 +462,7 @@
         <h3>비상용 LED 손전등</h3>
         <div class="old-price">18,000원</div>
         <div class="price"><span class="discount">28%</span>12,900원</div>
-        <button onclick="addCart('비상용 LED 손전등')">장바구니 담기</button>
+        <button onclick="addCart('비상용 LED 손전등', 12900)">🛒 담기</button>
       </div>
 
       <div class="card">
@@ -377,7 +470,7 @@
         <h3>고속 충전 케이블</h3>
         <div class="old-price">19,000원</div>
         <div class="price"><span class="discount">27%</span>13,900원</div>
-        <button onclick="addCart('고속 충전 케이블')">장바구니 담기</button>
+        <button onclick="addCart('고속 충전 케이블', 13900)">🛒 담기</button>
       </div>
 
       <div class="card">
@@ -385,7 +478,7 @@
         <h3>2채널 블랙박스</h3>
         <div class="old-price">159,000원</div>
         <div class="price"><span class="discount">25%</span>119,000원</div>
-        <button onclick="addCart('2채널 블랙박스')">장바구니 담기</button>
+        <button onclick="addCart('2채널 블랙박스', 119000)">🛒 담기</button>
       </div>
 
       <div class="card">
@@ -393,7 +486,7 @@
         <h3>차량용 소화기</h3>
         <div class="old-price">32,000원</div>
         <div class="price"><span class="discount">22%</span>24,900원</div>
-        <button onclick="addCart('차량용 소화기')">장바구니 담기</button>
+        <button onclick="addCart('차량용 소화기', 24900)">🛒 담기</button>
       </div>
     </div>
   </section>
@@ -406,16 +499,123 @@
     <p>© 2026 프리마켓</p>
   </footer>
 
+  <!-- 오른쪽 아래 장바구니 버튼 -->
+  <button class="cart-button" onclick="toggleCart()">🛒 <span id="cart-count">0</span></button>
+
+  <!-- 장바구니 창 (처음엔 숨김) -->
+  <div class="cart-box" id="cart-box" hidden>
+    <h3>🛒 장바구니</h3>
+    <ul id="cart-list"></ul>
+    <p class="cart-total">합계 <span id="cart-total">0</span>원</p>
+    <div class="cart-actions">
+      <button class="gray" onclick="clearCart()">비우기</button>
+      <button onclick="order()">주문하기</button>
+    </div>
+  </div>
+
+  <!-- 담았을 때 잠깐 뜨는 안내 문구 -->
+  <div class="toast" id="toast" hidden></div>
+
   <script>
+    // 장바구니에 담긴 상품들 (이름, 가격, 개수)
+    let cart = [];
+
     // 배너 버튼을 누르면 실행
     function showEvent() {
       alert("🎉 드라이브 시즌 할인 이벤트가 진행 중이에요!");
     }
 
-    // 상품 버튼을 누르면 실행
-    function addCart(name) {
-      alert(name + "을(를) 장바구니에 담았어요! 🚙");
+    // 상품의 담기 버튼을 누르면 실행
+    function addCart(name, price) {
+      // 이미 담긴 상품이면 개수만 +1
+      for (let item of cart) {
+        if (item.name === name) {
+          item.count = item.count + 1;
+          showCart();
+          showToast(name + " 1개 더 담았어요!");
+          return;
+        }
+      }
+      // 처음 담는 상품이면 새로 추가
+      cart.push({ name: name, price: price, count: 1 });
+      showCart();
+      showToast(name + " 담았어요! 🚙");
     }
+
+    // + / - 버튼으로 개수 바꾸기
+    function changeCount(index, amount) {
+      cart[index].count = cart[index].count + amount;
+      if (cart[index].count <= 0) {
+        cart.splice(index, 1);  // 0개가 되면 목록에서 빼기
+      }
+      showCart();
+    }
+
+    // 장바구니 화면을 새로 그리기
+    function showCart() {
+      let html = "";
+      let total = 0;
+      let count = 0;
+
+      for (let i = 0; i < cart.length; i++) {
+        let item = cart[i];
+        total = total + item.price * item.count;
+        count = count + item.count;
+        html += "<li>" + item.name +
+          "<div class='row'>" +
+            "<span>" +
+              "<button class='small' onclick='changeCount(" + i + ", -1)'>-</button> " +
+              item.count + "개 " +
+              "<button class='small' onclick='changeCount(" + i + ", 1)'>+</button>" +
+            "</span>" +
+            "<b>" + (item.price * item.count).toLocaleString() + "원</b>" +
+          "</div></li>";
+      }
+
+      if (cart.length === 0) {
+        html = "<li>아직 담은 상품이 없어요 🥲</li>";
+      }
+
+      document.getElementById("cart-list").innerHTML = html;
+      document.getElementById("cart-total").textContent = total.toLocaleString();
+      document.getElementById("cart-count").textContent = count;
+    }
+
+    // 장바구니 창 열기/닫기
+    function toggleCart() {
+      let box = document.getElementById("cart-box");
+      box.hidden = !box.hidden;
+    }
+
+    // 장바구니 비우기
+    function clearCart() {
+      cart = [];
+      showCart();
+    }
+
+    // 주문하기
+    function order() {
+      if (cart.length === 0) {
+        alert("장바구니가 비어 있어요!");
+        return;
+      }
+      let total = document.getElementById("cart-total").textContent;
+      alert("🎉 총 " + total + "원 주문이 완료됐어요! 감사합니다.");
+      clearCart();
+    }
+
+    // 안내 문구를 1.5초 동안 보여주기
+    function showToast(message) {
+      let toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.hidden = false;
+      setTimeout(function () {
+        toast.hidden = true;
+      }, 1500);
+    }
+
+    // 처음 열었을 때 빈 장바구니 표시
+    showCart();
   </script>
 
 </body>
