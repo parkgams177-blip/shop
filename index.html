@@ -264,6 +264,12 @@
       font-weight: bold;
     }
 
+    .login-sub {
+      font-size: 12px;
+      font-weight: normal;
+      color: #8a7565;
+    }
+
     /* 가입/로그인 결과 문구 */
     .login-message {
       margin: 12px 0 0;
@@ -758,6 +764,8 @@
     <!-- 로그인 전에 보이는 부분 -->
     <div id="login-form">
       <p class="login-help">로그인하면 컴퓨터와 핸드폰에서 같은 장바구니를 볼 수 있어요.</p>
+      <label class="login-label" for="name">이름 <span class="login-sub">(가입할 때만 입력)</span></label>
+      <input type="text" id="name" placeholder="홍길동" maxlength="20">
       <label class="login-label" for="email">이메일</label>
       <input type="email" id="email" placeholder="name@example.com">
       <label class="login-label" for="password">비밀번호</label>
@@ -943,7 +951,9 @@
       document.getElementById("login-done").hidden = (user === null);
       document.getElementById("account-button").classList.toggle("logged-in", user !== null);
       if (user) {
-        document.getElementById("user-email").textContent = user.email;
+        // 가입할 때 넣은 이름이 있으면 이름, 없으면 이메일로 인사
+        let name = user.user_metadata && user.user_metadata.name;
+        document.getElementById("user-email").textContent = name || user.email;
       }
     }
 
@@ -989,9 +999,11 @@
     // 가입
     async function signUp() {
       if (!db) return showLoginMessage("지금은 로그인 서버에 연결할 수 없습니다.", "error");
+      let name = document.getElementById("name").value.trim();
       let email = document.getElementById("email").value.trim();
       let password = document.getElementById("password").value;
 
+      if (name === "") return showLoginMessage("❌ 가입 실패: 이름을 입력해 주세요.", "error");
       let problem = checkInput(email, password);
       if (problem) return showLoginMessage("❌ 가입 실패: " + problem, "error");
 
@@ -999,7 +1011,10 @@
       const { data, error } = await db.auth.signUp({
         email: email,
         password: password,
-        options: { emailRedirectTo: location.origin + location.pathname }
+        options: {
+          data: { name: name },  // 이름은 회원 정보에 함께 저장
+          emailRedirectTo: location.origin + location.pathname
+        }
       });
 
       if (error) {
@@ -1018,9 +1033,9 @@
         user = data.user;
         showLoginState();
         loadServerCart(true);
-        showLoginMessage("✅ 가입이 완료되었습니다!", "ok");
+        showLoginMessage("✅ " + name + " 님, 가입이 완료되었습니다!", "ok");
       } else {
-        showLoginMessage("✅ 가입이 완료되었습니다! " + email + " 로 보낸 인증 메일의 링크를 누른 뒤 로그인해 주세요.", "ok");
+        showLoginMessage("✅ " + name + " 님, 가입이 완료되었습니다! " + email + " 로 보낸 인증 메일의 링크를 누른 뒤 로그인해 주세요.", "ok");
       }
     }
 
