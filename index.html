@@ -192,8 +192,9 @@
       color: #8a7565;
     }
 
-    /* 오른쪽 위 장바구니 아이콘 */
-    .cart-button {
+    /* 오른쪽 위 장바구니 아이콘 + 로그인 아이콘 */
+    .cart-button,
+    .account-button {
       position: fixed;  /* 스크롤해도 같은 자리에 */
       top: 16px;
       right: 16px;
@@ -209,13 +210,61 @@
       z-index: 10;
     }
 
-    .cart-button:hover {
+    .cart-button:hover,
+    .account-button:hover {
       background-color: #fff1e6;
     }
 
-    .cart-button svg {
+    .cart-button svg,
+    .account-button svg {
       width: 26px;
       height: 26px;
+    }
+
+    /* 로그인 아이콘은 장바구니 왼쪽에 */
+    .account-button {
+      right: 78px;
+    }
+
+    /* 로그인하면 주황색으로 채워짐 */
+    .account-button.logged-in {
+      background-color: #ff8a3d;
+    }
+
+    .account-button.logged-in svg {
+      stroke: white;
+    }
+
+    /* 로그인 창 (화면 가운데) */
+    .login-box {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 340px;
+      max-width: 90%;
+      box-sizing: border-box;
+      padding: 24px;
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      z-index: 35;
+    }
+
+    .login-help {
+      font-size: 14px;
+      color: #8a7565;
+      line-height: 1.5;
+    }
+
+    .login-box input {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      padding: 12px;
+      font-size: 16px;  /* 16px보다 작으면 아이폰에서 화면이 확대됨 */
+      border: 1px solid #ffd2ad;
+      border-radius: 12px;
     }
 
     /* 아이콘 위 빨간 숫자 */
@@ -367,7 +416,29 @@
       }
 
       header h1 {
-        font-size: 30px;
+        font-size: 26px;
+      }
+
+      /* 핸드폰에서는 위쪽 아이콘을 조금 작게 */
+      .cart-button,
+      .account-button {
+        top: 12px;
+        width: 40px;
+        height: 40px;
+      }
+
+      .cart-button {
+        right: 10px;
+      }
+
+      .account-button {
+        right: 56px;
+      }
+
+      .cart-button svg,
+      .account-button svg {
+        width: 22px;
+        height: 22px;
       }
 
       header p {
@@ -635,10 +706,61 @@
     </div>
   </div>
 
+  <!-- 오른쪽 위 로그인 아이콘 (장바구니 아이콘 왼쪽) -->
+  <button class="account-button" id="account-button" onclick="toggleLogin()" aria-label="로그인">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#ff8a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="8" r="4"></circle>
+      <path d="M4 21a8 8 0 0 1 16 0"></path>
+    </svg>
+  </button>
+
+  <!-- 로그인 창 뒤 어두운 배경 -->
+  <div class="overlay" id="login-overlay" onclick="toggleLogin()"></div>
+
+  <!-- 로그인 창 -->
+  <div class="login-box" id="login-box" hidden>
+    <div class="cart-head">
+      <h3>👤 로그인</h3>
+      <button class="close-button" onclick="toggleLogin()">✕</button>
+    </div>
+
+    <!-- 로그인 전에 보이는 부분 -->
+    <div id="login-form">
+      <p class="login-help">로그인하면 컴퓨터와 핸드폰에서 같은 장바구니를 볼 수 있어요.</p>
+      <input type="email" id="email" placeholder="이메일">
+      <input type="password" id="password" placeholder="비밀번호 (6자 이상)">
+      <div class="cart-actions">
+        <button class="gray" onclick="signUp()">회원가입</button>
+        <button onclick="logIn()">로그인</button>
+      </div>
+    </div>
+
+    <!-- 로그인 후에 보이는 부분 -->
+    <div id="login-done" hidden>
+      <p class="login-help"><b id="user-email"></b> 님, 반가워요! 👋<br>장바구니가 자동으로 저장돼요.</p>
+      <div class="cart-actions">
+        <button class="gray" onclick="logOut()">로그아웃</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 담았을 때 잠깐 뜨는 안내 문구 -->
   <div class="toast" id="toast" hidden></div>
 
+  <!-- Supabase 라이브러리 불러오기 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js"></script>
+
   <script>
+    // ===== Supabase 연결 =====
+    // publishable 키는 웹페이지에 넣어도 되는 공개용 키예요.
+    // (다른 사람 데이터는 Supabase 보안 규칙이 막아 줌)
+    const SUPABASE_URL = "https://mzxrvjjdvssnrcgkggxm.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_mulesAk4o49SBCakAnfqlA_Y4qdl4V8";
+    // 라이브러리를 못 불러오면 db는 null (로그인 없이 쇼핑만 가능)
+    const db = window.supabase ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    let user = null;  // 로그인한 사람 (없으면 null)
+
     // 장바구니에 담긴 상품들 (이름, 가격, 개수)
     let cart = [];
 
@@ -660,14 +782,14 @@
       for (let item of cart) {
         if (item.name === name) {
           item.count = item.count + 1;
-          showCart();
+          updateCart();
           showToast(name + " 1개 더 담았어요!");
           return;
         }
       }
       // 처음 담는 상품이면 새로 추가
       cart.push({ name: name, price: price, count: 1 });
-      showCart();
+      updateCart();
       showToast(name + " 담았어요! 🚙");
     }
 
@@ -677,7 +799,7 @@
       if (cart[index].count <= 0) {
         cart.splice(index, 1);  // 0개가 되면 목록에서 빼기
       }
-      showCart();
+      updateCart();
     }
 
     // 장바구니 화면을 새로 그리기
@@ -718,6 +840,149 @@
       }
     }
 
+    // 장바구니를 바꾼 뒤 부르는 함수: 화면 그리기 + 서버 저장
+    function updateCart() {
+      showCart();
+      saveServerCart();
+    }
+
+    // ===== Supabase에 장바구니 저장 / 불러오기 =====
+
+    // 로그인했으면 서버에 장바구니 저장
+    async function saveServerCart() {
+      if (!user) return;
+      const { error } = await db.from("carts").upsert({
+        user_id: user.id,
+        items: cart,
+        updated_at: new Date().toISOString()
+      });
+      if (error) {
+        console.error(error);
+        showToast("장바구니를 서버에 저장하지 못했어요 😢");
+      }
+    }
+
+    // 서버에서 내 장바구니 불러오기
+    // addLocal이 true면 로그인 전에 담아 둔 상품도 합쳐요.
+    async function loadServerCart(addLocal) {
+      const { data, error } = await db.from("carts").select("items").eq("user_id", user.id).maybeSingle();
+      if (error) {
+        console.error(error);
+        showToast("장바구니를 불러오지 못했어요 😢");
+        return;
+      }
+
+      let serverCart = data ? data.items : [];
+
+      if (addLocal) {
+        for (let local of cart) {
+          let same = null;
+          for (let item of serverCart) {
+            if (item.name === local.name) same = item;
+          }
+          if (same) {
+            same.count = same.count + local.count;
+          } else {
+            serverCart.push(local);
+          }
+        }
+      }
+
+      cart = serverCart;
+      showCart();
+      if (addLocal) saveServerCart();
+    }
+
+    // ===== 로그인 / 회원가입 / 로그아웃 =====
+
+    // 로그인 창 열기/닫기
+    function toggleLogin() {
+      let box = document.getElementById("login-box");
+      box.hidden = !box.hidden;
+      document.getElementById("login-overlay").classList.toggle("open");
+    }
+
+    // 로그인 상태에 맞게 화면 바꾸기
+    function showLoginState() {
+      document.getElementById("login-form").hidden = (user !== null);
+      document.getElementById("login-done").hidden = (user === null);
+      document.getElementById("account-button").classList.toggle("logged-in", user !== null);
+      if (user) {
+        document.getElementById("user-email").textContent = user.email;
+      }
+    }
+
+    // 회원가입
+    async function signUp() {
+      if (!db) return alert("지금은 로그인 서버에 연결할 수 없어요.");
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+      const { data, error } = await db.auth.signUp({
+        email: email,
+        password: password,
+        options: { emailRedirectTo: location.origin + location.pathname }
+      });
+      if (error) {
+        alert("회원가입 실패: " + error.message);
+        return;
+      }
+      if (data.session) {
+        // 메일 확인 없이 바로 로그인되는 설정일 때
+        user = data.user;
+        showLoginState();
+        loadServerCart(true);
+        showToast("회원가입 완료! 🎉");
+      } else {
+        alert("📧 " + email + " 로 확인 메일을 보냈어요.\n메일의 링크를 누른 뒤 로그인해 주세요.");
+      }
+    }
+
+    // 로그인
+    async function logIn() {
+      if (!db) return alert("지금은 로그인 서버에 연결할 수 없어요.");
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+      const { data, error } = await db.auth.signInWithPassword({ email: email, password: password });
+      if (error) {
+        alert("로그인 실패: " + error.message);
+        return;
+      }
+      user = data.user;
+      showLoginState();
+      toggleLogin();
+      loadServerCart(true);  // 로그인 전에 담은 상품도 합치기
+      showToast("로그인했어요! 👋");
+    }
+
+    // 로그아웃
+    async function logOut() {
+      await db.auth.signOut();
+      user = null;
+      cart = [];  // 이 기기에 남은 장바구니 지우기
+      showCart();
+      showLoginState();
+      toggleLogin();
+      showToast("로그아웃했어요");
+    }
+
+    // 페이지를 열 때: 이미 로그인돼 있으면 서버 장바구니 불러오기
+    async function checkLogin() {
+      if (!db) return;
+      const { data } = await db.auth.getSession();
+      if (data.session) {
+        user = data.session.user;
+        showLoginState();
+        loadServerCart(false);
+      }
+    }
+
+    // 다른 앱/탭에 갔다가 돌아오면 최신 장바구니 다시 불러오기
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "visible" && user) {
+        loadServerCart(false);
+      }
+    });
+
     // 메뉴를 누르면 해당 카테고리만 보여주기 ('all'이면 전체)
     function showCategory(id) {
       let sections = document.querySelectorAll(".products");
@@ -745,7 +1010,7 @@
     // 장바구니 비우기
     function clearCart() {
       cart = [];
-      showCart();
+      updateCart();
     }
 
     // 주문하기
@@ -786,6 +1051,7 @@
     // 처음 열었을 때 실행
     showCart();
     showCounts();
+    checkLogin();
   </script>
 
 </body>
