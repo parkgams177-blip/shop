@@ -11,6 +11,11 @@
       scroll-behavior: smooth;
     }
 
+    /* hidden이 붙은 요소는 무조건 숨기기 */
+    [hidden] {
+      display: none !important;
+    }
+
     /* 전체 기본 설정 + 배경 사진 */
     body {
       margin: 0;
@@ -226,13 +231,23 @@
       right: 78px;
     }
 
-    /* 로그인하면 주황색으로 채워짐 */
-    .account-button.logged-in {
-      background-color: #ff8a3d;
+    /* 로그인하면 👤 아이콘 자리에 나오는 로그아웃 버튼 */
+    .logout-top {
+      position: fixed;
+      top: 16px;
+      right: 78px;
+      height: 52px;
+      padding: 0 18px;
+      border-radius: 26px;
+      background-color: white;
+      color: #ff8a3d;
+      font-size: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 10;
     }
 
-    .account-button.logged-in svg {
-      stroke: white;
+    .logout-top:hover {
+      background-color: #fff1e6;
     }
 
     /* 로그인 창 (화면 가운데) */
@@ -251,19 +266,6 @@
       border-radius: 20px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
       z-index: 35;
-    }
-
-    /* 제목 아래 "홍길동 님 환영해요 [로그아웃]" 줄 */
-    .user-bar {
-      margin-top: 10px;
-      font-size: 14px;
-    }
-
-    .logout-button {
-      margin-left: 6px;
-      padding: 4px 12px;
-      font-size: 13px;
-      background-color: #c9bbb0;
     }
 
     .login-help {
@@ -490,6 +492,11 @@
         background-attachment: scroll;  /* 핸드폰에서는 고정 배경이 깨져서 끔 */
       }
 
+      /* 위쪽 버튼들과 겹치지 않게 제목을 아래로 */
+      header {
+        padding-top: 60px;
+      }
+
       header h1 {
         font-size: 26px;
       }
@@ -508,6 +515,14 @@
 
       .account-button {
         right: 56px;
+      }
+
+      .logout-top {
+        top: 12px;
+        right: 56px;
+        height: 40px;
+        padding: 0 12px;
+        font-size: 13px;
       }
 
       .cart-button svg,
@@ -588,12 +603,6 @@
   <header>
     <h1>🚗 프리마켓</h1>
     <p>내 차를 더 편안하고 귀엽게, 자동차 용품 전문몰</p>
-
-    <!-- 로그인했을 때만 보이는 인사 + 로그아웃 버튼 -->
-    <div class="user-bar" id="user-bar" hidden>
-      👋 <b id="user-bar-name"></b> 님 환영해요
-      <button class="logout-button" onclick="logOut()">로그아웃</button>
-    </div>
   </header>
 
   <!-- 메뉴: 누르면 그 카테고리 상품만 보여줌 -->
@@ -795,6 +804,9 @@
     </svg>
   </button>
 
+  <!-- 로그인하면 👤 아이콘 대신 보이는 로그아웃 버튼 -->
+  <button class="logout-top" id="logout-top" onclick="logOut()" hidden>로그아웃</button>
+
   <!-- 로그인 창 뒤 어두운 배경 -->
   <div class="overlay" id="login-overlay" onclick="toggleLogin()"></div>
 
@@ -841,14 +853,6 @@
 
       <!-- 성공/실패 안내 문구가 나오는 곳 -->
       <p class="login-message" id="login-message" hidden></p>
-    </div>
-
-    <!-- 로그인 후에 보이는 부분 -->
-    <div id="login-done" hidden>
-      <p class="login-help"><b id="user-email"></b> 님, 반가워요! 👋<br>장바구니가 자동으로 저장돼요.</p>
-      <div class="cart-actions">
-        <button class="gray" onclick="logOut()">로그아웃</button>
-      </div>
     </div>
   </div>
 
@@ -1022,26 +1026,16 @@
         el.hidden = isSignup;
       }
 
-      if (user) {
-        document.getElementById("login-title").textContent = "👤 내 계정";
-      } else {
-        document.getElementById("login-title").textContent = isSignup ? "📝 회원가입" : "👤 로그인";
-      }
+      document.getElementById("login-title").textContent = isSignup ? "📝 회원가입" : "👤 로그인";
       document.getElementById("login-message").hidden = true;  // 이전 안내 문구 지우기
     }
 
-    // 로그인 상태에 맞게 화면 바꾸기
+    // 로그인 상태에 맞게 오른쪽 위 버튼 바꾸기
+    // 로그인 전: 👤 아이콘 / 로그인 후: 로그아웃 버튼
     function showLoginState() {
-      document.getElementById("login-form").hidden = (user !== null);
-      document.getElementById("login-done").hidden = (user === null);
-      document.getElementById("account-button").classList.toggle("logged-in", user !== null);
-      document.getElementById("user-bar").hidden = (user === null);
-      if (user) {
-        // 가입할 때 넣은 이름이 있으면 이름, 없으면 이메일로 인사
-        let name = user.user_metadata && user.user_metadata.name;
-        document.getElementById("user-email").textContent = name || user.email;
-        document.getElementById("user-bar-name").textContent = name || user.email;
-      }
+      let loggedIn = (user !== null);
+      document.getElementById("account-button").hidden = loggedIn;
+      document.getElementById("logout-top").hidden = !loggedIn;
     }
 
     // 입력 창 아래에 안내 문구 보여주기 (type: "ok", "error", "wait")
