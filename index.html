@@ -642,6 +642,13 @@
     // 장바구니에 담긴 상품들 (이름, 가격, 개수)
     let cart = [];
 
+    // 브라우저에 저장해 둔 장바구니가 있으면 불러오기
+    try {
+      cart = JSON.parse(localStorage.getItem("cart")) || [];
+    } catch (e) {
+      cart = [];
+    }
+
     // 배너 버튼을 누르면 실행
     function showEvent() {
       alert("🎉 드라이브 시즌 할인 이벤트가 진행 중이에요!");
@@ -702,6 +709,13 @@
       document.getElementById("cart-total").textContent = total.toLocaleString();
       document.getElementById("cart-count").textContent = count;
       document.getElementById("cart-count").hidden = (count === 0);  // 0개면 숫자 숨기기
+
+      // 바뀐 장바구니를 브라우저에 저장 (새로고침해도 유지)
+      try {
+        localStorage.setItem("cart", JSON.stringify(cart));
+      } catch (e) {
+        // 저장이 막힌 브라우저(시크릿 모드 등)에서는 그냥 넘어감
+      }
     }
 
     // 메뉴를 누르면 해당 카테고리만 보여주기 ('all'이면 전체)
