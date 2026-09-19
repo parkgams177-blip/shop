@@ -208,31 +208,74 @@
       line-height: 20px;
     }
 
-    /* 장바구니 창 */
+    /* 장바구니 창: 오른쪽 화면 밖에 숨어 있다가 밀려 나옴 */
     .cart-box {
       position: fixed;
-      right: 16px;
-      top: 80px;
-      width: 300px;
-      max-width: calc(100% - 40px);
+      top: 0;
+      right: 0;
+      width: 320px;
+      max-width: 85%;
+      height: 100%;
       box-sizing: border-box;
       padding: 20px;
       background-color: white;
-      border-radius: 20px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-      z-index: 10;
+      border-radius: 20px 0 0 20px;
+      box-shadow: -6px 0 20px rgba(0, 0, 0, 0.2);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);  /* 자기 폭만큼 오른쪽으로 밀어서 숨김 */
+      transition: transform 0.3s;   /* 0.3초 동안 부드럽게 움직임 */
     }
 
-    .cart-box h3 {
-      margin: 0 0 10px;
+    /* open이 붙으면 제자리로 나옴 */
+    .cart-box.open {
+      transform: translateX(0);
+    }
+
+    /* 장바구니 뒤 어두운 배경 */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 25;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* 장바구니 제목 + 닫기 버튼 */
+    .cart-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .cart-head h3 {
+      margin: 0;
+    }
+
+    .close-button {
+      padding: 4px 12px;
+      font-size: 16px;
+      background-color: #c9bbb0;
     }
 
     .cart-box ul {
       list-style: none;
       margin: 0;
       padding: 0;
-      max-height: 250px;
-      overflow-y: auto;
+      flex: 1;           /* 남는 공간을 목록이 모두 차지 */
+      overflow-y: auto;  /* 많아지면 목록만 스크롤 */
     }
 
     .cart-box li {
@@ -288,7 +331,7 @@
       color: white;
       border-radius: 20px;
       font-size: 14px;
-      z-index: 20;
+      z-index: 40;
     }
 
     /* ===== 핸드폰 화면 (폭 600px 이하) ===== */
@@ -541,9 +584,15 @@
     <span class="cart-count" id="cart-count" hidden>0</span>
   </button>
 
-  <!-- 장바구니 창 (처음엔 숨김) -->
-  <div class="cart-box" id="cart-box" hidden>
-    <h3>🛒 장바구니</h3>
+  <!-- 장바구니 뒤 어두운 배경 (누르면 닫힘) -->
+  <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+  <!-- 장바구니 창 (오른쪽에서 나옴) -->
+  <div class="cart-box" id="cart-box">
+    <div class="cart-head">
+      <h3>🛒 장바구니</h3>
+      <button class="close-button" onclick="toggleCart()">✕</button>
+    </div>
     <ul id="cart-list"></ul>
     <p class="cart-total">합계 <span id="cart-total">0</span>원</p>
     <div class="cart-actions">
@@ -623,8 +672,8 @@
 
     // 장바구니 창 열기/닫기
     function toggleCart() {
-      let box = document.getElementById("cart-box");
-      box.hidden = !box.hidden;
+      document.getElementById("cart-box").classList.toggle("open");
+      document.getElementById("overlay").classList.toggle("open");
     }
 
     // 장바구니 비우기
@@ -642,6 +691,7 @@
       let total = document.getElementById("cart-total").textContent;
       alert("🎉 총 " + total + "원 주문이 완료됐어요! 감사합니다.");
       clearCart();
+      toggleCart();  // 주문 후 장바구니 닫기
     }
 
     // 안내 문구를 1.5초 동안 보여주기
