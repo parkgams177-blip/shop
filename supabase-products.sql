@@ -15,18 +15,9 @@ create table if not exists public.products (
   created_at timestamptz not null default now()
 );
 
--- 2. 할인율(discount_rate)은 가격으로 자동 계산되는 칸
---    (원래 가격 - 판매가) × 100 ÷ 원래 가격 을 반올림, 할인이 없으면 0
+-- 2. 할인율 칸은 두지 않음 (쇼핑몰 화면에서 가격으로 자동 계산)
+--    예전에 만든 discount_rate 칸이 남아 있으면 지우기
 alter table public.products drop column if exists discount_rate;
-alter table public.products
-  add column discount_rate integer
-  generated always as (
-    case
-      when original_price > 0 and price < original_price
-        then round((original_price - price) * 100.0 / original_price)::integer
-      else 0
-    end
-  ) stored;
 
 -- 3. 보안: 누구나 상품 "보기"만 가능 (추가/수정/삭제는 대시보드에서만)
 alter table public.products enable row level security;
