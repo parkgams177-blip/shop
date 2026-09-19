@@ -184,6 +184,13 @@
       margin-right: 6px;
     }
 
+    /* 상품 불러오는 중 / 실패 안내 */
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: #8a7565;
+    }
+
     /* 맨 아래 (연락처) */
     footer {
       margin-top: 40px;
@@ -620,9 +627,8 @@
   <!-- 메뉴: 누르면 그 카테고리 상품만 보여줌 -->
   <nav>
     <a href="#" class="menu active" id="menu-all" onclick="showCategory('all'); return false;">전체상품 <span class="count"></span></a>
-    <a href="#" class="menu" id="menu-wash" onclick="showCategory('wash'); return false;">세차용품 <span class="count"></span></a>
-    <a href="#" class="menu" id="menu-inside" onclick="showCategory('inside'); return false;">실내용품 <span class="count"></span></a>
-    <a href="#" class="menu" id="menu-safety" onclick="showCategory('safety'); return false;">안전·전자용품 <span class="count"></span></a>
+    <!-- 카테고리 메뉴는 Supabase 상품을 불러온 뒤 여기에 들어감 -->
+    <span id="category-menus"></span>
     <a href="#contact">고객센터</a>
   </nav>
 
@@ -632,146 +638,10 @@
     <button onclick="showEvent()">이벤트 보러가기</button>
   </section>
 
-  <!-- 카테고리 1: 세차용품 -->
-  <section class="products" id="wash">
-    <h2>🧽 세차용품 <span class="count"></span></h2>
-
-    <div class="card-list">
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1694678505383-676d78ea3b96?w=400&h=300&fit=crop" alt="세차 스펀지">
-        <h3>극세사 세차 스펀지</h3>
-        <div class="old-price">12,000원</div>
-        <div class="price"><span class="discount">26%</span>8,900원</div>
-        <button onclick="addCart('극세사 세차 스펀지', 8900)">🛒 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1633014041037-f5446fb4ce99?w=400&h=300&fit=crop" alt="거품 카샴푸">
-        <h3>거품 카샴푸</h3>
-        <div class="old-price">16,000원</div>
-        <div class="price"><span class="discount">30%</span>11,200원</div>
-        <button onclick="addCart('거품 카샴푸', 11200)">🛒 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1565689876697-e467b6c54da2?w=400&h=300&fit=crop" alt="휠 세척 브러시">
-        <h3>휠 세척 브러시</h3>
-        <div class="old-price">20,000원</div>
-        <div class="price"><span class="discount">26%</span>14,900원</div>
-        <button onclick="addCart('휠 세척 브러시', 14900)">🛒 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1652994994973-05db53f13034?w=400&h=300&fit=crop" alt="유리 발수 코팅제">
-        <h3>유리 발수 코팅제</h3>
-        <div class="old-price">14,000원</div>
-        <div class="price"><span class="discount">30%</span>9,800원</div>
-        <button onclick="addCart('유리 발수 코팅제', 9800)">🛒 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1761934658331-2e00b20dc6c6?w=400&h=300&fit=crop" alt="흡수 드라잉 타월">
-        <h3>흡수 드라잉 타월</h3>
-        <div class="old-price">18,000원</div>
-        <div class="price"><span class="discount">25%</span>13,500원</div>
-        <button onclick="addCart('흡수 드라잉 타월', 13500)">🛒 담기</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- 카테고리 2: 실내용품 -->
-  <section class="products" id="inside">
-    <h2>🧸 실내용품 <span class="count"></span></h2>
-
-    <div class="card-list">
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1768983298275-942312c9b446?w=400&h=300&fit=crop" alt="차량용 방향제">
-        <h3>우드캡 차량용 방향제</h3>
-        <div class="old-price">15,000원</div>
-        <div class="price"><span class="discount">27%</span>10,900원</div>
-        <button onclick="addCart('우드캡 차량용 방향제', 10900)">🛒 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1654801816121-2beac3d9af53?w=400&h=300&fit=crop" alt="목쿠션">
-        <h3>폭신 목쿠션</h3>
-        <div class="old-price">22,000원</div>
-        <div class="price"><span class="discount">30%</span>15,400원</div>
-        <button onclick="addCart('폭신 목쿠션', 15400)">🛒 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1758347965959-0d3601b55fe5?w=400&h=300&fit=crop" alt="차량용 컵홀더">
-        <h3>차량용 컵홀더</h3>
-        <div class="old-price">9,000원</div>
-        <div class="price"><span class="discount">23%</span>6,900원</div>
-        <button onclick="addCart('차량용 컵홀더', 6900)">🛒 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1688054004445-7c9108eb4005?w=400&h=300&fit=crop" alt="트렁크 정리함">
-        <h3>트렁크 정리함</h3>
-        <div class="old-price">29,000원</div>
-        <div class="price"><span class="discount">24%</span>21,900원</div>
-        <button onclick="addCart('트렁크 정리함', 21900)">🛒 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1605647381739-9bba88b1c5d1?w=400&h=300&fit=crop" alt="가죽 시트 커버">
-        <h3>가죽 시트 커버</h3>
-        <div class="old-price">35,000원</div>
-        <div class="price"><span class="discount">30%</span>24,500원</div>
-        <button onclick="addCart('가죽 시트 커버', 24500)">🛒 담기</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- 카테고리 3: 안전·전자용품 -->
-  <section class="products" id="safety">
-    <h2>🔦 안전·전자용품 <span class="count"></span></h2>
-
-    <div class="card-list">
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1717007873182-7cc5d673cbff?w=400&h=300&fit=crop" alt="휴대폰 거치대">
-        <h3>휴대폰 거치대</h3>
-        <div class="old-price">25,000원</div>
-        <div class="price"><span class="discount">30%</span>17,500원</div>
-        <button onclick="addCart('휴대폰 거치대', 17500)">🛒 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1561916960-dea3b9b0355a?w=400&h=300&fit=crop" alt="LED 손전등">
-        <h3>비상용 LED 손전등</h3>
-        <div class="old-price">18,000원</div>
-        <div class="price"><span class="discount">28%</span>12,900원</div>
-        <button onclick="addCart('비상용 LED 손전등', 12900)">🛒 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1572721546624-05bf65ad7679?w=400&h=300&fit=crop" alt="고속 충전 케이블">
-        <h3>고속 충전 케이블</h3>
-        <div class="old-price">19,000원</div>
-        <div class="price"><span class="discount">27%</span>13,900원</div>
-        <button onclick="addCart('고속 충전 케이블', 13900)">🛒 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1765959106936-851735565c12?w=400&h=300&fit=crop" alt="블랙박스">
-        <h3>2채널 블랙박스</h3>
-        <div class="old-price">159,000원</div>
-        <div class="price"><span class="discount">25%</span>119,000원</div>
-        <button onclick="addCart('2채널 블랙박스', 119000)">🛒 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1625958936686-a9343dc35b5b?w=400&h=300&fit=crop" alt="차량용 소화기">
-        <h3>차량용 소화기</h3>
-        <div class="old-price">32,000원</div>
-        <div class="price"><span class="discount">22%</span>24,900원</div>
-        <button onclick="addCart('차량용 소화기', 24900)">🛒 담기</button>
-      </div>
-    </div>
-  </section>
+  <!-- 상품 목록: Supabase에서 불러와서 자바스크립트가 채워 넣음 -->
+  <div id="product-area">
+    <p class="loading">상품을 불러오는 중이에요... 🚗</p>
+  </div>
 
   <!-- 맨 아래: 연락처 -->
   <footer id="contact">
@@ -1281,9 +1151,106 @@
       document.querySelector("#menu-all .count").textContent = total;
     }
 
+    // ===== Supabase에서 상품 불러와서 보여주기 =====
+
+    // 카테고리별 제목 앞 이모지 (없는 카테고리는 📦)
+    const CATEGORY_EMOJI = { wash: "🧽", inside: "🧸", safety: "🔦" };
+
+    let products = [];  // Supabase에서 불러온 상품들
+
+    // 글자 속 < > " 같은 특수문자를 안전하게 바꾸기
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // Supabase의 products 표에서 상품 가져오기
+    async function loadProducts() {
+      let area = document.getElementById("product-area");
+      if (!db) {
+        area.innerHTML = "<p class='loading'>상품을 불러올 수 없어요 😢</p>";
+        return;
+      }
+
+      const { data, error } = await db.from("products").select("*").order("sort_order");
+      if (error) {
+        console.error(error);
+        area.innerHTML = "<p class='loading'>상품을 불러오지 못했어요 😢<br><br>" +
+          "<button onclick='loadProducts()'>다시 시도</button></p>";
+        return;
+      }
+
+      products = data;
+      showProducts();
+    }
+
+    // 불러온 상품으로 카테고리 메뉴 + 상품 카드 만들기
+    function showProducts() {
+      // 1. 어떤 카테고리가 있는지 순서대로 모으기
+      let categories = [];
+      for (let p of products) {
+        let found = false;
+        for (let c of categories) {
+          if (c.code === p.category) found = true;
+        }
+        if (!found) categories.push({ code: p.category, name: p.category_name });
+      }
+
+      // 2. 카테고리마다 메뉴 버튼과 상품 묶음 만들기
+      let menuHtml = "";
+      let areaHtml = "";
+      for (let c of categories) {
+        let code = escapeHtml(c.code);
+        let name = escapeHtml(c.name);
+        let emoji = CATEGORY_EMOJI[c.code] || "📦";
+
+        menuHtml += "<a href='#' class='menu' id='menu-" + code + "' " +
+          "onclick=\"showCategory('" + code + "'); return false;\">" +
+          name + " <span class='count'></span></a>";
+
+        areaHtml += "<section class='products' id='" + code + "'>" +
+          "<h2>" + emoji + " " + name + " <span class='count'></span></h2>" +
+          "<div class='card-list'>";
+
+        for (let i = 0; i < products.length; i++) {
+          let p = products[i];
+          if (p.category !== c.code) continue;
+          areaHtml +=
+            "<div class='card'>" +
+              "<img src='" + escapeHtml(p.image_url) + "' alt='" + escapeHtml(p.name) + "' loading='lazy'>" +
+              "<h3>" + escapeHtml(p.name) + "</h3>" +
+              "<div class='old-price'>" + p.original_price.toLocaleString() + "원</div>" +
+              "<div class='price'><span class='discount'>" + p.discount_rate + "%</span>" +
+                p.price.toLocaleString() + "원</div>" +
+              "<button onclick='addProduct(" + i + ")'>🛒 담기</button>" +
+            "</div>";
+        }
+
+        areaHtml += "</div></section>";
+      }
+
+      if (products.length === 0) {
+        areaHtml = "<p class='loading'>아직 등록된 상품이 없어요.</p>";
+      }
+
+      document.getElementById("category-menus").innerHTML = menuHtml;
+      document.getElementById("product-area").innerHTML = areaHtml;
+      showCounts();
+    }
+
+    // 상품 카드의 담기 버튼 → 장바구니에 넣기
+    function addProduct(index) {
+      let p = products[index];
+      addCart(p.name, p.price);
+    }
+
     // 처음 열었을 때 실행
     showCart();
-    showCounts();
+    loadProducts();
     checkLogin();
   </script>
 
