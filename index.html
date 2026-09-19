@@ -266,10 +266,23 @@
       font-weight: bold;
     }
 
-    .login-sub {
-      font-size: 12px;
-      font-weight: normal;
+    /* 로그인 / 가입하기 큰 버튼 */
+    .wide-button {
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    /* "아직 회원이 아니신가요? 회원가입" 문구 */
+    .switch-text {
+      margin: 14px 0 0;
+      text-align: center;
+      font-size: 14px;
       color: #8a7565;
+    }
+
+    .switch-text a {
+      color: #ff8a3d;
+      font-weight: bold;
     }
 
     /* 비밀번호 확인 칸 아래 일치/불일치 표시 */
@@ -769,26 +782,44 @@
   <!-- 로그인 창 -->
   <div class="login-box" id="login-box" hidden>
     <div class="cart-head">
-      <h3>👤 로그인 · 가입</h3>
+      <h3 id="login-title">👤 로그인</h3>
       <button class="close-button" onclick="toggleLogin()">✕</button>
     </div>
 
     <!-- 로그인 전에 보이는 부분 -->
     <div id="login-form">
       <p class="login-help">로그인하면 컴퓨터와 핸드폰에서 같은 장바구니를 볼 수 있어요.</p>
-      <label class="login-label" for="name">이름 <span class="login-sub">(가입할 때만 입력)</span></label>
-      <input type="text" id="name" placeholder="홍길동" maxlength="20">
+
+      <!-- 회원가입 화면에서만 보이는 칸 -->
+      <div class="signup-only" hidden>
+        <label class="login-label" for="name">이름</label>
+        <input type="text" id="name" placeholder="홍길동" maxlength="20">
+      </div>
+
       <label class="login-label" for="email">이메일</label>
       <input type="email" id="email" placeholder="name@example.com">
       <label class="login-label" for="password">비밀번호</label>
       <input type="password" id="password" placeholder="6자 이상">
-      <label class="login-label" for="password2">비밀번호 확인 <span class="login-sub">(가입할 때만 입력)</span></label>
-      <input type="password" id="password2" placeholder="비밀번호를 한 번 더 입력">
-      <p class="match-hint" id="match-hint"></p>
-      <div class="cart-actions">
-        <button class="gray" onclick="signUp()">가입</button>
-        <button onclick="logIn()">로그인</button>
+
+      <!-- 회원가입 화면에서만 보이는 칸 -->
+      <div class="signup-only" hidden>
+        <label class="login-label" for="password2">비밀번호 확인</label>
+        <input type="password" id="password2" placeholder="비밀번호를 한 번 더 입력">
+        <p class="match-hint" id="match-hint"></p>
       </div>
+
+      <!-- 로그인 화면 버튼 -->
+      <div class="login-only">
+        <button class="wide-button" onclick="logIn()">로그인</button>
+        <p class="switch-text">아직 회원이 아니신가요? <a href="#" onclick="setMode('signup'); return false;">회원가입</a></p>
+      </div>
+
+      <!-- 회원가입 화면 버튼 -->
+      <div class="signup-only" hidden>
+        <button class="wide-button" onclick="signUp()">가입하기</button>
+        <p class="switch-text">이미 회원이신가요? <a href="#" onclick="setMode('login'); return false;">로그인</a></p>
+      </div>
+
       <!-- 성공/실패 안내 문구가 나오는 곳 -->
       <p class="login-message" id="login-message" hidden></p>
     </div>
@@ -953,11 +984,31 @@
 
     // ===== 로그인 / 회원가입 / 로그아웃 =====
 
-    // 로그인 창 열기/닫기
+    // 로그인 창 열기/닫기 (열 때는 항상 로그인 화면부터)
     function toggleLogin() {
       let box = document.getElementById("login-box");
       box.hidden = !box.hidden;
       document.getElementById("login-overlay").classList.toggle("open");
+      if (!box.hidden) setMode("login");
+    }
+
+    // 로그인 화면 ↔ 회원가입 화면 바꾸기 (mode: "login" 또는 "signup")
+    function setMode(mode) {
+      let isSignup = (mode === "signup");
+
+      for (let el of document.querySelectorAll(".signup-only")) {
+        el.hidden = !isSignup;
+      }
+      for (let el of document.querySelectorAll(".login-only")) {
+        el.hidden = isSignup;
+      }
+
+      if (user) {
+        document.getElementById("login-title").textContent = "👤 내 계정";
+      } else {
+        document.getElementById("login-title").textContent = isSignup ? "📝 회원가입" : "👤 로그인";
+      }
+      document.getElementById("login-message").hidden = true;  // 이전 안내 문구 지우기
     }
 
     // 로그인 상태에 맞게 화면 바꾸기
@@ -1069,8 +1120,11 @@
         user = data.user;
         showLoginState();
         loadServerCart(true);
-        showLoginMessage("✅ " + name + " 님, 가입이 완료되었습니다!", "ok");
+        toggleLogin();  // 창 닫기
+        showToast("✅ " + name + " 님, 가입이 완료되었습니다!");
       } else {
+        // 가입 끝 → 로그인 화면으로 돌아가서 안내
+        setMode("login");
         showLoginMessage("✅ " + name + " 님, 가입이 완료되었습니다! " + email + " 로 보낸 인증 메일의 링크를 누른 뒤 로그인해 주세요.", "ok");
       }
     }
