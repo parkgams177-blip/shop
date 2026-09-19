@@ -16,6 +16,7 @@
       margin: 0;
       font-family: "Malgun Gothic", sans-serif;
       color: #4a3b30;
+      word-break: keep-all;  /* 한글이 단어 중간에서 끊기지 않게 */
       /* 사진 위에 연한 크림색을 덮어서 글씨가 잘 보이게 함 */
       background-image:
         linear-gradient(rgba(255, 248, 240, 0.8), rgba(255, 248, 240, 0.8)),
@@ -163,6 +164,74 @@
 
     footer a {
       color: #8a7565;
+    }
+
+    /* ===== 핸드폰 화면 (폭 600px 이하) ===== */
+    @media (max-width: 600px) {
+      body {
+        background-attachment: scroll;  /* 핸드폰에서는 고정 배경이 깨져서 끔 */
+      }
+
+      header h1 {
+        font-size: 30px;
+      }
+
+      header p {
+        font-size: 14px;
+      }
+
+      nav a {
+        margin: 0 6px;
+        font-size: 14px;
+      }
+
+      .banner {
+        margin: 20px 12px;
+        padding: 35px 15px;
+        border-radius: 20px;
+      }
+
+      .banner h2 {
+        font-size: 22px;
+      }
+
+      .products {
+        padding: 12px;
+      }
+
+      /* 상품을 한 줄에 2개씩 */
+      .card-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .card {
+        width: auto;
+        padding: 10px;
+      }
+
+      .card img {
+        height: 110px;
+      }
+
+      .card h3 {
+        font-size: 14px;
+      }
+
+      .old-price {
+        font-size: 12px;
+      }
+
+      .price {
+        font-size: 16px;
+      }
+
+      .card button {
+        width: 100%;
+        padding: 8px 0;
+        font-size: 13px;
+      }
     }
   </style>
 </head>
