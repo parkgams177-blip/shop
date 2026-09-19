@@ -51,7 +51,10 @@
     }
 
     nav a {
-      margin: 0 15px;
+      display: inline-block;
+      margin: 4px;
+      padding: 6px 16px;
+      border-radius: 20px;
       color: #4a3b30;
       text-decoration: none;
       font-weight: bold;
@@ -59,6 +62,12 @@
 
     nav a:hover {
       color: #ff8a3d;
+    }
+
+    /* 지금 선택된 메뉴 */
+    nav a.active {
+      background-color: #ff8a3d;
+      color: white;
     }
 
     /* 큰 배너 */
@@ -348,9 +357,16 @@
         font-size: 14px;
       }
 
+      /* 메뉴를 한 줄로 두고 옆으로 밀어서 보기 */
+      nav {
+        white-space: nowrap;
+        overflow-x: auto;
+      }
+
       nav a {
-        margin: 0 6px;
-        font-size: 14px;
+        margin: 2px;
+        padding: 5px 10px;
+        font-size: 13px;
       }
 
       .banner {
@@ -411,11 +427,12 @@
     <p>내 차를 더 편안하고 귀엽게, 자동차 용품 전문몰</p>
   </header>
 
-  <!-- 메뉴: 누르면 해당 카테고리로 이동 -->
+  <!-- 메뉴: 누르면 그 카테고리 상품만 보여줌 -->
   <nav>
-    <a href="#wash">세차용품</a>
-    <a href="#inside">실내용품</a>
-    <a href="#safety">안전·전자용품</a>
+    <a href="#" class="menu active" id="menu-all" onclick="showCategory('all'); return false;">전체상품</a>
+    <a href="#" class="menu" id="menu-wash" onclick="showCategory('wash'); return false;">세차용품</a>
+    <a href="#" class="menu" id="menu-inside" onclick="showCategory('inside'); return false;">실내용품</a>
+    <a href="#" class="menu" id="menu-safety" onclick="showCategory('safety'); return false;">안전·전자용품</a>
     <a href="#contact">고객센터</a>
   </nav>
 
@@ -668,6 +685,24 @@
       document.getElementById("cart-total").textContent = total.toLocaleString();
       document.getElementById("cart-count").textContent = count;
       document.getElementById("cart-count").hidden = (count === 0);  // 0개면 숫자 숨기기
+    }
+
+    // 메뉴를 누르면 해당 카테고리만 보여주기 ('all'이면 전체)
+    function showCategory(id) {
+      let sections = document.querySelectorAll(".products");
+      for (let section of sections) {
+        section.hidden = !(id === "all" || section.id === id);
+      }
+
+      // 누른 메뉴만 주황색으로
+      let menus = document.querySelectorAll(".menu");
+      for (let menu of menus) {
+        menu.classList.remove("active");
+      }
+      document.getElementById("menu-" + id).classList.add("active");
+
+      // 상품이 있는 곳으로 스크롤
+      document.querySelector(".products:not([hidden])").scrollIntoView();
     }
 
     // 장바구니 창 열기/닫기
