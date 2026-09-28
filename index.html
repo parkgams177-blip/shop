@@ -3,9 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>프리마켓</title>
+  <title>모토벨릭스 MOTOVELIX</title>
+
+  <!-- 글꼴: 로고용 Orbitron + 한글 Noto Sans KR (인터넷이 안 되면 맑은 고딕으로 보임) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Orbitron:wght@800;900&display=swap" rel="stylesheet">
 
   <style>
+    /* ===== 브랜드 색 ===== */
+    :root {
+      --red: #e11d2e;        /* 강렬함 · 신뢰 */
+      --red-dark: #b91524;
+      --navy: #0b0f16;       /* 고급스러움 · 안정감 */
+      --navy-2: #151b26;
+      --gray: #6b7280;       /* 전문성 · 세련됨 */
+      --line: #e5e7eb;
+      --bg: #f4f5f7;
+      --text: #111827;
+    }
+
     /* 메뉴를 누르면 부드럽게 이동 */
     html {
       scroll-behavior: smooth;
@@ -16,280 +33,655 @@
       display: none !important;
     }
 
-    /* 전체 기본 설정 + 배경 사진 */
+    /* 전체 기본 설정 */
     body {
       margin: 0;
-      font-family: "Malgun Gothic", sans-serif;
-      color: #4a3b30;
+      font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
       word-break: keep-all;  /* 한글이 단어 중간에서 끊기지 않게 */
-      /* 사진 위에 연한 크림색을 덮어서 글씨가 잘 보이게 함 */
-      background-image:
-        linear-gradient(rgba(255, 248, 240, 0.8), rgba(255, 248, 240, 0.8)),
-        url("https://images.unsplash.com/photo-1506664958676-205b41a88d0d?w=1920&q=80");
-      background-size: cover;
-      background-attachment: fixed;  /* 스크롤해도 배경은 그대로 */
-      background-color: #fff8f0;
     }
 
-    /* 맨 위 (쇼핑몰 이름) */
-    header {
-      text-align: center;
-      padding: 30px 20px 10px;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 40px;
-      color: #ff8a3d;
-    }
-
-    header p {
-      margin: 8px 0 0;
-      color: #8a7565;
-    }
-
-    /* 메뉴 */
-    nav {
-      text-align: center;
-      padding: 15px;
-      border-bottom: 2px dashed #ffd2ad;
-    }
-
-    nav a {
-      display: inline-block;
-      margin: 4px;
-      padding: 6px 16px;
-      border-radius: 20px;
-      color: #4a3b30;
+    a {
+      color: inherit;
       text-decoration: none;
-      font-weight: bold;
     }
 
-    nav a:hover {
-      color: #ff8a3d;
+    /* 가운데 정렬되는 내용 폭 */
+    .inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
 
-    /* 지금 선택된 메뉴 */
-    nav a.active {
-      background-color: #ff8a3d;
-      color: white;
-    }
-
-    /* 메뉴 옆 상품 개수 */
-    nav .count {
-      font-size: 12px;
-      color: #ff8a3d;
-    }
-
-    nav a.active .count {
-      color: white;
-    }
-
-    /* 카테고리 제목 옆 상품 개수 */
-    .products h2 .count {
-      font-size: 16px;
-      font-weight: normal;
-      color: #8a7565;
-    }
-
-    /* 큰 배너 */
-    .banner {
-      margin: 30px 20px;
-      padding: 60px 20px;
-      text-align: center;
-      background-color: #ffb27a;
-      border-radius: 30px;
-      color: white;
-    }
-
-    .banner h2 {
-      margin: 0 0 20px;
-      font-size: 32px;
-    }
-
-    /* 버튼 */
+    /* 기본 버튼 */
     button {
       padding: 12px 28px;
-      font-size: 16px;
-      font-weight: bold;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
       color: white;
-      background-color: #ff8a3d;
+      background-color: var(--red);
       border: none;
-      border-radius: 30px;
+      border-radius: 8px;
       cursor: pointer;
     }
 
     button:hover {
-      background-color: #f0701f;
+      background-color: var(--red-dark);
     }
 
-    .banner button {
+    /* ===== 로고 (마크 + MOTOVELIX 글자) ===== */
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      white-space: nowrap;
+    }
+
+    .logo svg {
+      width: 40px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .wordmark {
+      font-family: "Orbitron", "Arial Black", sans-serif;
+      font-weight: 900;
+      font-size: 26px;
+      letter-spacing: 1px;
+      font-style: italic;
+      line-height: 1;
+    }
+
+    .wordmark .x {
+      color: var(--red);
+    }
+
+    /* ===== 맨 위 검은 머리글 (스크롤해도 위에 붙어 있음) ===== */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background-color: var(--navy);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .topbar .inner {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      height: 76px;
+    }
+
+    /* 검색창 */
+    .search {
+      flex: 1;
+      max-width: 460px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 42px;
+      padding: 0 16px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 22px;
+      background-color: var(--navy-2);
+    }
+
+    .search svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: #9ca3af;
+    }
+
+    .search input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      background: none;
+      color: white;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .search input::placeholder {
+      color: #8b93a1;
+    }
+
+    /* 오른쪽 아이콘 버튼들 (로그인 · 회원가입 · 장바구니 · 전체메뉴) */
+    .top-icons {
+      margin-left: auto;
+      display: flex;
+      gap: 6px;
+    }
+
+    .icon-button {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 60px;
+      padding: 6px 4px;
+      background: none;
+      color: white;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 8px;
+    }
+
+    .icon-button:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .icon-button svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* 장바구니 아이콘 위 빨간 숫자 */
+    .cart-count {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      box-sizing: border-box;
+      border-radius: 9px;
+      background-color: var(--red);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 18px;
+      text-align: center;
+    }
+
+    /* ===== 두 번째 줄 메뉴 ===== */
+    .gnb {
+      background-color: var(--navy);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .gnb .inner {
+      display: flex;
+      align-items: center;
+      height: 52px;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .gnb a {
+      padding: 8px 18px;
+      color: #e5e7eb;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .gnb a:hover {
+      color: var(--red);
+    }
+
+    .gnb .all-category {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 0;
+      padding-right: 28px;
+      margin-right: 12px;
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      font-weight: 700;
+    }
+
+    .gnb .all-category svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* ===== 큰 메인 사진 (히어로) ===== */
+    .hero {
+      position: relative;
+      color: white;
+      background-color: var(--navy);
+      /* 왼쪽을 어둡게 덮어서 글씨가 잘 보이게 */
+      background-image:
+        linear-gradient(90deg, rgba(11, 15, 22, 0.95) 0%, rgba(11, 15, 22, 0.7) 40%, rgba(11, 15, 22, 0.1) 75%),
+        linear-gradient(0deg, rgba(11, 15, 22, 0.9) 0%, rgba(11, 15, 22, 0) 35%),
+        url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=80");
+      background-size: cover;
+      background-position: center 60%;
+    }
+
+    .hero .inner {
+      padding-top: 70px;
+      padding-bottom: 36px;
+    }
+
+    .slogan {
+      margin: 0 0 18px;
+      font-size: 13px;
+      letter-spacing: 7px;
+      color: #d1d5db;
+    }
+
+    .hero .wordmark {
+      display: block;
+      font-size: 72px;
+      letter-spacing: 2px;
+    }
+
+    .hero h2 {
+      margin: 26px 0 10px;
+      font-size: 34px;
+      font-weight: 700;
+    }
+
+    .hero .sub {
+      margin: 0;
+      font-size: 18px;
+      color: #e5e7eb;
+    }
+
+    /* 히어로 아래쪽 장점 4개 */
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 70px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 26px;
+      border-left: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .feature:first-child {
+      padding-left: 0;
+      border-left: none;
+    }
+
+    .feature svg {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+    }
+
+    .feature b {
+      display: block;
+      font-size: 15px;
+    }
+
+    .feature span {
+      font-size: 12px;
+      color: #aeb4bf;
+    }
+
+    /* ===== 카테고리 사진 타일 ===== */
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 14px;
+      padding-top: 28px;
+      padding-bottom: 28px;
+    }
+
+    .category {
+      padding: 8px 8px 14px;
       background-color: white;
-      color: #ff8a3d;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .category:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 24px rgba(11, 15, 22, 0.12);
+    }
+
+    .category img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 6px;
+      display: block;
+      background-color: var(--line);
+    }
+
+    .category b {
+      display: block;
+      margin-top: 12px;
+      font-size: 16px;
+    }
+
+    .category span {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    /* ===== 기획전 배너 ===== */
+    .promos {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 10px;
+      padding-bottom: 50px;
+    }
+
+    .promo {
+      grid-column: span 4;   /* 첫 줄: 3개 */
+      position: relative;
+      min-height: 170px;
+      padding: 24px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: white;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .promo.small {
+      grid-column: span 3;   /* 둘째 줄: 4개 */
+      min-height: 150px;
+    }
+
+    /* 사진 위 왼쪽을 어둡게 */
+    .promo::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(11, 15, 22, 0.92) 0%, rgba(11, 15, 22, 0.6) 55%, rgba(11, 15, 22, 0.15) 100%);
+      transition: opacity 0.2s;
+    }
+
+    .promo:hover::before {
+      opacity: 0.85;
+    }
+
+    .promo > * {
+      position: relative;  /* 어두운 막 위로 글씨 올리기 */
+    }
+
+    .promo p {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .promo h3 {
+      margin: 4px 0 8px;
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--red);
+    }
+
+    .promo.small h3 {
+      font-size: 20px;
+    }
+
+    .promo h3 em {
+      font-style: normal;
+      color: white;
+    }
+
+    .promo small {
+      font-size: 13px;
+      color: #d1d5db;
+    }
+
+    .go {
+      align-self: flex-start;
+      margin-top: 16px;
+      padding: 4px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 14px;
+      font-size: 12px;
+    }
+
+    /* ===== 상품 목록 ===== */
+    .shop {
+      padding: 50px 0 20px;
+      background-color: white;
+      border-top: 1px solid var(--line);
+      scroll-margin-top: 76px;  /* 위에 붙은 머리글에 가리지 않게 */
+    }
+
+    .section-title {
+      margin: 0 0 6px;
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .section-title .slogan-small {
+      margin-left: 10px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      color: var(--gray);
+    }
+
+    /* 카테고리 탭 */
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 20px 0 10px;
+    }
+
+    .tabs a {
+      padding: 8px 18px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      background-color: white;
+    }
+
+    .tabs a:hover {
+      border-color: var(--navy);
+    }
+
+    /* 지금 선택된 탭 */
+    .tabs a.active {
+      background-color: var(--navy);
+      border-color: var(--navy);
+      color: white;
+    }
+
+    /* 탭 옆 상품 개수 */
+    .tabs .count {
+      margin-left: 2px;
+      font-size: 12px;
+      color: var(--red);
+    }
+
+    .tabs a.active .count {
+      color: #fca5a5;
+    }
+
+    /* 검색 결과 안내 */
+    .search-result {
+      margin: 10px 0 0;
+      color: var(--gray);
+      font-size: 14px;
+    }
+
+    .search-result a {
+      margin-left: 8px;
+      color: var(--red);
+      font-weight: 700;
     }
 
     /* 카테고리 (상품 묶음) */
     .products {
-      text-align: center;
-      padding: 20px;
+      padding: 26px 0 10px;
+      scroll-margin-top: 76px;
+    }
+
+    .products h2 {
+      margin: 0 0 16px;
+      padding-left: 12px;
+      border-left: 4px solid var(--red);
+      font-size: 20px;
+    }
+
+    /* 카테고리 제목 옆 상품 개수 */
+    .products h2 .count {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gray);
     }
 
     .card-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 18px;
     }
 
     .card {
-      width: 160px;
-      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      padding: 12px 12px 16px;
       background-color: white;
-      border-radius: 20px;
-      box-shadow: 0 4px 12px rgba(255, 138, 61, 0.2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      transition: box-shadow 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 10px 24px rgba(11, 15, 22, 0.1);
     }
 
     /* 상품 사진 */
     .card img {
       width: 100%;
-      height: 130px;
+      aspect-ratio: 4 / 3;
       object-fit: cover;  /* 사진 비율이 달라도 꽉 차게 */
-      border-radius: 12px;
+      border-radius: 6px;
+      background-color: var(--bg);
     }
 
     .card h3 {
-      margin: 8px 0;
-      font-size: 16px;
-    }
-
-    .card button {
-      padding: 8px 16px;
-      font-size: 14px;
+      margin: 12px 0 6px;
+      font-size: 15px;
+      font-weight: 500;
     }
 
     .old-price {
-      color: #b5a597;
+      font-size: 13px;
+      color: #9ca3af;
       text-decoration: line-through;  /* 가운데 줄 긋기 */
     }
 
     .price {
-      font-size: 18px;
-      font-weight: bold;
-      color: #ff8a3d;
-      margin: 5px 0 10px;
+      margin: 2px 0 12px;
+      font-size: 19px;
+      font-weight: 900;
     }
 
     .discount {
-      color: #e5484d;
+      color: var(--red);
       margin-right: 6px;
+    }
+
+    .card button {
+      margin-top: auto;   /* 버튼은 항상 카드 맨 아래 */
+      padding: 10px 0;
+      font-size: 14px;
+      background-color: var(--navy);
+    }
+
+    .card button:hover {
+      background-color: var(--red);
     }
 
     /* 상품 불러오는 중 / 실패 안내 */
     .loading {
       text-align: center;
       padding: 60px 20px;
-      color: #8a7565;
+      color: var(--gray);
     }
 
-    /* 맨 아래 (연락처) */
+    /* ===== 맨 아래 ===== */
     footer {
-      margin-top: 40px;
-      padding: 30px;
-      text-align: center;
-      background-color: #ffe6d1;
-      color: #8a7565;
-    }
-
-    footer a {
-      color: #8a7565;
-    }
-
-    /* 오른쪽 위 장바구니 아이콘 + 로그인 아이콘 */
-    .cart-button,
-    .account-button {
-      position: fixed;  /* 스크롤해도 같은 자리에 */
-      top: 16px;
-      right: 16px;
-      width: 52px;
-      height: 52px;
-      padding: 0;
-      border-radius: 50%;  /* 동그랗게 */
-      background-color: white;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-    }
-
-    .cart-button:hover,
-    .account-button:hover {
-      background-color: #fff1e6;
-    }
-
-    .cart-button svg,
-    .account-button svg {
-      width: 26px;
-      height: 26px;
-    }
-
-    /* 로그인 아이콘은 장바구니 왼쪽에 */
-    .account-button {
-      right: 78px;
-    }
-
-    /* 로그인하면 👤 아이콘 자리에 나오는 로그아웃 버튼 */
-    .logout-top {
-      position: fixed;
-      top: 24px;         /* 장바구니 아이콘(52px)과 가운데 높이 맞춤 */
-      right: 80px;
-      height: 36px;
-      padding: 0 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      border: 1px solid #e3d8ce;
-      border-radius: 18px;
-      background-color: rgba(255, 255, 255, 0.9);
-      color: #8a7565;
+      margin-top: 50px;
+      padding: 34px 0 30px;
+      background-color: var(--navy);
+      color: #9ca3af;
       font-size: 13px;
-      font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-      z-index: 10;
     }
 
-    .logout-top svg {
-      width: 15px;
-      height: 15px;
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .logout-top:hover {
-      background-color: white;
-      border-color: #ff8a3d;
-      color: #ff8a3d;
+    .footer-top .wordmark {
+      font-size: 22px;
     }
 
-    /* 로그인 창 (화면 가운데) */
+    .footer-top .about {
+      color: #d1d5db;
+    }
+
+    .footer-top .slogan {
+      margin: 0;
+      font-size: 12px;
+      letter-spacing: 5px;
+    }
+
+    .footer-info {
+      padding-top: 18px;
+      line-height: 1.9;
+    }
+
+    .footer-info p {
+      margin: 0;
+    }
+
+    .footer-info a {
+      text-decoration: underline;
+    }
+
+    /* ===== 로그인 창 (화면 가운데) ===== */
     .login-box {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 340px;
+      width: 360px;
       max-width: 90%;
       max-height: 90%;   /* 화면보다 길면 */
       overflow-y: auto;  /* 창 안에서 스크롤 */
       box-sizing: border-box;
-      padding: 24px;
+      padding: 26px;
       background-color: white;
-      border-radius: 20px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
       z-index: 35;
     }
 
     .login-help {
       font-size: 14px;
-      color: #8a7565;
+      color: var(--gray);
       line-height: 1.5;
     }
 
@@ -297,7 +689,7 @@
       display: block;
       margin-bottom: 4px;
       font-size: 14px;
-      font-weight: bold;
+      font-weight: 700;
     }
 
     /* 로그인 / 가입하기 큰 버튼 */
@@ -311,12 +703,12 @@
       margin: 14px 0 0;
       text-align: center;
       font-size: 14px;
-      color: #8a7565;
+      color: var(--gray);
     }
 
     .switch-text a {
-      color: #ff8a3d;
-      font-weight: bold;
+      color: var(--red);
+      font-weight: 700;
     }
 
     /* 비밀번호 확인 칸 아래 일치/불일치 표시 */
@@ -333,7 +725,7 @@
     .login-message {
       margin: 12px 0 0;
       padding: 10px 12px;
-      border-radius: 12px;
+      border-radius: 8px;
       font-size: 14px;
       line-height: 1.5;
     }
@@ -349,8 +741,8 @@
     }
 
     .login-message.wait {
-      background-color: #fff1e6;
-      color: #8a7565;
+      background-color: var(--bg);
+      color: var(--gray);
     }
 
     .login-box input {
@@ -358,40 +750,29 @@
       box-sizing: border-box;
       margin-bottom: 10px;
       padding: 12px;
+      font-family: inherit;
       font-size: 16px;  /* 16px보다 작으면 아이폰에서 화면이 확대됨 */
-      border: 1px solid #ffd2ad;
-      border-radius: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
     }
 
-    /* 아이콘 위 빨간 숫자 */
-    .cart-count {
-      position: absolute;
-      top: -4px;
-      right: -4px;
-      min-width: 20px;
-      height: 20px;
-      padding: 0 5px;
-      box-sizing: border-box;
-      border-radius: 10px;
-      background-color: #e5484d;
-      color: white;
-      font-size: 12px;
-      line-height: 20px;
+    .login-box input:focus {
+      outline: none;
+      border-color: var(--navy);
     }
 
-    /* 장바구니 창: 오른쪽 화면 밖에 숨어 있다가 밀려 나옴 */
+    /* ===== 장바구니 창: 오른쪽 화면 밖에 숨어 있다가 밀려 나옴 ===== */
     .cart-box {
       position: fixed;
       top: 0;
       right: 0;
-      width: 320px;
+      width: 340px;
       max-width: 85%;
       height: 100%;
       box-sizing: border-box;
-      padding: 20px;
+      padding: 22px;
       background-color: white;
-      border-radius: 20px 0 0 20px;
-      box-shadow: -6px 0 20px rgba(0, 0, 0, 0.2);
+      box-shadow: -6px 0 20px rgba(0, 0, 0, 0.25);
       z-index: 30;
       display: flex;
       flex-direction: column;
@@ -404,14 +785,14 @@
       transform: translateX(0);
     }
 
-    /* 장바구니 뒤 어두운 배경 */
+    /* 장바구니 · 로그인 창 뒤 어두운 배경 */
     .overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0, 0, 0, 0.5);
       z-index: 25;
       opacity: 0;
       visibility: hidden;
@@ -423,7 +804,7 @@
       visibility: visible;
     }
 
-    /* 장바구니 제목 + 닫기 버튼 */
+    /* 창 제목 + 닫기 버튼 */
     .cart-head {
       display: flex;
       justify-content: space-between;
@@ -438,7 +819,12 @@
     .close-button {
       padding: 4px 12px;
       font-size: 16px;
-      background-color: #c9bbb0;
+      background-color: #e5e7eb;
+      color: var(--text);
+    }
+
+    .close-button:hover {
+      background-color: #d1d5db;
     }
 
     .cart-box ul {
@@ -450,8 +836,8 @@
     }
 
     .cart-box li {
-      padding: 8px 0;
-      border-bottom: 1px dashed #ffd2ad;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
       font-size: 14px;
     }
 
@@ -459,19 +845,19 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     .cart-box .small {
       padding: 2px 10px;
       font-size: 14px;
+      background-color: var(--navy);
     }
 
     .cart-total {
       text-align: right;
       font-size: 18px;
-      font-weight: bold;
-      color: #ff8a3d;
+      font-weight: 900;
     }
 
     .cart-actions {
@@ -481,12 +867,13 @@
 
     .cart-actions button {
       flex: 1;
-      padding: 10px 0;
+      padding: 12px 0;
       font-size: 14px;
     }
 
     .cart-actions .gray {
-      background-color: #c9bbb0;
+      background-color: #e5e7eb;
+      color: var(--text);
     }
 
     /* 담았을 때 잠깐 뜨는 안내 문구 */
@@ -497,111 +884,213 @@
       transform: translateX(-50%);
       width: max-content;
       max-width: 90%;
-      padding: 10px 18px;
-      background-color: #4a3b30;
+      padding: 12px 20px;
+      background-color: var(--navy);
       color: white;
-      border-radius: 20px;
+      border-radius: 24px;
       font-size: 14px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
       z-index: 40;
+    }
+
+    /* ===== 태블릿 (폭 1000px 이하) ===== */
+    @media (max-width: 1000px) {
+      .topbar .inner {
+        gap: 18px;
+      }
+
+      .hero .wordmark {
+        font-size: 52px;
+      }
+
+      /* 카테고리 타일은 옆으로 밀어서 보기 */
+      .categories {
+        display: flex;
+        overflow-x: auto;
+      }
+
+      .category {
+        flex: 0 0 140px;
+      }
+
+      .promo,
+      .promo.small {
+        grid-column: span 6;
+      }
+
+      .feature {
+        padding: 8px 18px 8px 0;
+        border-left: none;
+        width: 45%;
+      }
     }
 
     /* ===== 핸드폰 화면 (폭 600px 이하) ===== */
     @media (max-width: 600px) {
-      body {
-        background-attachment: scroll;  /* 핸드폰에서는 고정 배경이 깨져서 끔 */
+      .inner {
+        padding: 0 16px;
       }
 
-      /* 위쪽 버튼들과 겹치지 않게 제목을 아래로 */
-      header {
-        padding-top: 60px;
+      /* 머리글: 첫 줄 로고 + 아이콘, 둘째 줄 검색창 */
+      .topbar .inner {
+        flex-wrap: wrap;
+        height: auto;
+        gap: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
       }
 
-      header h1 {
-        font-size: 26px;
+      .logo svg {
+        width: 30px;
+        height: 20px;
       }
 
-      /* 핸드폰에서는 위쪽 아이콘을 조금 작게 */
-      .cart-button,
-      .account-button {
-        top: 12px;
-        width: 40px;
-        height: 40px;
+      .wordmark {
+        font-size: 19px;
       }
 
-      .cart-button {
-        right: 10px;
+      .top-icons {
+        gap: 0;
       }
 
-      .account-button {
-        right: 56px;
+      .icon-button {
+        min-width: 44px;
+        font-size: 10px;
       }
 
-      .logout-top {
-        top: 16px;       /* 장바구니 아이콘(40px)과 가운데 높이 맞춤 */
-        right: 58px;
-        height: 32px;
-        padding: 0 11px;
-        font-size: 12px;
+      .icon-button svg {
+        width: 21px;
+        height: 21px;
       }
 
-      .cart-button svg,
-      .account-button svg {
-        width: 22px;
-        height: 22px;
+      .cart-count {
+        right: 2px;
       }
 
-      header p {
-        font-size: 14px;
+      /* 전체메뉴 아이콘은 공간이 없어서 숨김 */
+      .menu-icon {
+        display: none !important;
+      }
+
+      .search {
+        order: 3;
+        flex-basis: 100%;
+        max-width: none;
+        height: 38px;
+      }
+
+      .shop,
+      .products {
+        scroll-margin-top: 112px;
       }
 
       /* 메뉴를 한 줄로 두고 옆으로 밀어서 보기 */
-      nav {
-        white-space: nowrap;
+      .gnb .inner {
         overflow-x: auto;
+        height: 46px;
       }
 
-      nav a {
-        margin: 2px;
-        padding: 5px 10px;
+      .gnb a {
+        padding: 6px 10px;
+        font-size: 14px;
+      }
+
+      .gnb .all-category {
+        padding-right: 14px;
+        margin-right: 4px;
+      }
+
+      .hero {
+        background-position: 65% center;
+      }
+
+      .hero .inner {
+        padding-top: 44px;
+      }
+
+      .slogan {
+        font-size: 11px;
+        letter-spacing: 4px;
+      }
+
+      .hero .wordmark {
+        font-size: 34px;
+      }
+
+      .hero h2 {
+        font-size: 22px;
+        margin-top: 18px;
+      }
+
+      .hero .sub {
+        font-size: 15px;
+      }
+
+      .features {
+        margin-top: 40px;
+      }
+
+      .feature {
+        width: 50%;
+        box-sizing: border-box;
+        gap: 8px;
+      }
+
+      .feature svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      .feature b {
         font-size: 13px;
       }
 
-      .banner {
-        margin: 20px 12px;
-        padding: 35px 15px;
-        border-radius: 20px;
+      .feature span {
+        font-size: 11px;
       }
 
-      .banner h2 {
+      .category {
+        flex: 0 0 112px;
+      }
+
+      .category b {
+        font-size: 14px;
+      }
+
+      /* 기획전은 한 줄에 하나씩 */
+      .promo,
+      .promo.small {
+        grid-column: span 12;
+        min-height: 140px;
+      }
+
+      .section-title {
         font-size: 22px;
       }
 
-      .products {
-        padding: 12px;
+      .section-title .slogan-small {
+        display: none;
+      }
+
+      /* 탭도 한 줄로 두고 옆으로 밀기 */
+      .tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        white-space: nowrap;
       }
 
       /* 상품을 한 줄에 2개씩 */
       .card-list {
-        display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 12px;
+        gap: 10px;
       }
 
       .card {
-        width: auto;
-        padding: 10px;
-      }
-
-      .card img {
-        height: 110px;
+        padding: 8px 8px 12px;
       }
 
       .card h3 {
-        font-size: 14px;
-      }
-
-      .old-price {
-        font-size: 12px;
+        font-size: 13px;
       }
 
       .price {
@@ -609,57 +1098,231 @@
       }
 
       .card button {
-        width: 100%;
-        padding: 8px 0;
         font-size: 13px;
+      }
+
+      .footer-top {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- 맨 위: 쇼핑몰 이름과 소개 -->
-  <header>
-    <h1>🚗 프리마켓</h1>
-    <p>내 차를 더 편안하고 귀엽게, 자동차 용품 전문몰</p>
+  <!-- 로고 마크 (여러 곳에서 <use>로 가져다 씀) -->
+  <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+    <defs>
+      <symbol id="logo-mark" viewBox="0 0 64 40">
+        <path d="M0 40 L20 2 L33 26 L27 37 L20 23 L10 40 Z" fill="currentColor"></path>
+        <path d="M25 40 L45 2 L64 40 L53 40 L45 24 L36 40 Z" fill="#e11d2e"></path>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- 맨 위: 로고 · 검색 · 아이콘 (스크롤해도 위에 붙어 있음) -->
+  <header class="topbar">
+    <div class="inner">
+      <a href="#" class="logo" aria-label="모토벨릭스 처음으로">
+        <svg><use href="#logo-mark"></use></svg>
+        <span class="wordmark">MOTOVELI<span class="x">X</span></span>
+      </a>
+
+      <!-- 검색창: 상품 이름으로 찾기 -->
+      <form class="search" onsubmit="searchProducts(); return false;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+        <input type="search" id="search-input" placeholder="상품명, 브랜드, 키워드를 검색해보세요." aria-label="상품 검색">
+      </form>
+
+      <div class="top-icons">
+        <!-- 로그인 전 -->
+        <button class="icon-button" id="account-button" onclick="toggleLogin('login')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+          로그인
+        </button>
+        <button class="icon-button" id="signup-button" onclick="toggleLogin('signup')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="4"></circle><path d="M2 21a8 8 0 0 1 13.5-5.8"></path><line x1="19" y1="14" x2="19" y2="20"></line><line x1="16" y1="17" x2="22" y2="17"></line></svg>
+          회원가입
+        </button>
+        <!-- 로그인 후 -->
+        <button class="icon-button" id="logout-top" onclick="logOut()" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          로그아웃
+        </button>
+        <button class="icon-button" onclick="toggleCart()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path></svg>
+          장바구니
+          <span class="cart-count" id="cart-count" hidden>0</span>
+        </button>
+        <a href="#categories" class="icon-button menu-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
+          전체메뉴
+        </a>
+      </div>
+    </div>
   </header>
 
-  <!-- 메뉴: 누르면 그 카테고리 상품만 보여줌 -->
-  <nav>
-    <a href="#" class="menu active" id="menu-all" onclick="showCategory('all'); return false;">전체상품 <span class="count"></span></a>
-    <!-- 카테고리 메뉴는 Supabase 상품을 불러온 뒤 여기에 들어감 -->
-    <span id="category-menus"></span>
-    <a href="#contact">고객센터</a>
+  <!-- 두 번째 줄 메뉴 -->
+  <nav class="gnb">
+    <div class="inner">
+      <a href="#categories" class="all-category">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
+        전체 카테고리
+      </a>
+      <a href="#shop" onclick="showCategory('all'); return false;">신상품</a>
+      <a href="#promos">베스트상품</a>
+      <a href="#shop" onclick="showCategory('all'); return false;">할인특가</a>
+      <a href="#contact">고객센터</a>
+    </div>
   </nav>
 
-  <!-- 큰 배너 -->
-  <section class="banner">
-    <h2>드라이브 시즌 맞이 최대 30% 할인! 🍂</h2>
-    <button onclick="showEvent()">이벤트 보러가기</button>
+  <!-- 큰 메인 사진 -->
+  <section class="hero">
+    <div class="inner">
+      <p class="slogan">DRIVE BETTER &nbsp; LIVE BOLDER</p>
+      <h1 class="wordmark">MOTOVELI<span class="x">X</span></h1>
+      <h2>당신의 드라이브를 더 특별하게</h2>
+      <p class="sub">자동차용품의 모든 것, 모토벨릭스</p>
+
+      <div class="features">
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5z"></path><polyline points="8.5 12 11 14.5 15.5 9.5"></polyline></svg>
+          <div><b>최고의 품질</b><span>엄선된 상품</span></div>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="14" height="12" rx="1"></rect><path d="M15 8h4l3 4v4h-7"></path><circle cx="6" cy="18.5" r="2"></circle><circle cx="18" cy="18.5" r="2"></circle></svg>
+          <div><b>빠른 배송</b><span>오늘 주문하면 내일 도착</span></div>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-3a8 8 0 0 1 16 0v3"></path><rect x="2" y="13" width="4" height="6" rx="1.5"></rect><rect x="18" y="13" width="4" height="6" rx="1.5"></rect><path d="M20 19c0 2-2 3-5 3h-2"></path></svg>
+          <div><b>친절한 고객센터</b><span>평일 10:00 - 18:00</span></div>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.7-1 2.8 1 2.8-2.5 1.7-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9-2.5-1.7 1-2.8-1-2.8 2.5-1.7.9-2.9 3 .2z"></path><line x1="9" y1="15" x2="15" y2="9"></line><circle cx="9.5" cy="9.5" r="1"></circle><circle cx="14.5" cy="14.5" r="1"></circle></svg>
+          <div><b>다양한 할인혜택</b><span>회원전용 특별할인</span></div>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <!-- 상품 목록: Supabase에서 불러와서 자바스크립트가 채워 넣음 -->
-  <div id="product-area">
-    <p class="loading">상품을 불러오는 중이에요... 🚗</p>
+  <!-- 카테고리 사진 타일: 누르면 해당 상품으로 이동 -->
+  <div class="inner categories" id="categories">
+    <div class="category" onclick="goCategory('outside')">
+      <img src="https://images.unsplash.com/photo-1606577924006-27d39b132ae2?w=400&h=300&fit=crop" alt="" loading="lazy">
+      <b>외부용품</b><span>바디/램프/그릴 등</span>
+    </div>
+    <div class="category" onclick="goCategory('inside')">
+      <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&h=300&fit=crop" alt="" loading="lazy">
+      <b>내부용품</b><span>시트/매트/수납 등</span>
+    </div>
+    <div class="category" onclick="goCategory('wash')">
+      <img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=400&h=300&fit=crop" alt="" loading="lazy">
+      <b>세차용품</b><span>세정/광택/코팅 등</span>
+    </div>
+    <div class="category" onclick="goCategory('tools')">
+      <img src="https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=400&h=300&fit=crop" alt="" loading="lazy">
+      <b>정비공구</b><span>공구/작업용품 등</span>
+    </div>
+    <div class="category" onclick="goCategory('safety')">
+      <img src="https://images.unsplash.com/photo-1765959106936-851735565c12?w=400&h=300&fit=crop" alt="" loading="lazy">
+      <b>전자제품</b><span>블랙박스/내비/충전기 등</span>
+    </div>
+    <div class="category" onclick="goCategory('camping')">
+      <img src="https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=400&h=300&fit=crop" alt="" loading="lazy">
+      <b>캠핑/차박용품</b><span>텐트/테이블/의자 등</span>
+    </div>
+    <div class="category" onclick="goCategory('tuning')">
+      <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=400&h=300&fit=crop" alt="" loading="lazy">
+      <b>튜닝용품</b><span>성능업/드레스업 등</span>
+    </div>
   </div>
 
-  <!-- 맨 아래: 연락처 -->
-  <footer id="contact">
-    <p>📞 고객센터 1234-5678 (평일 10:00 ~ 18:00)</p>
-    <p>✉️ help@freemarket.com</p>
-    <p>사진 출처: <a href="https://unsplash.com">Unsplash</a> (무료 사용 가능)</p>
-    <p>© 2026 프리마켓</p>
-  </footer>
+  <!-- 기획전 배너 -->
+  <div class="inner promos" id="promos">
+    <div class="promo" onclick="goCategory('all')" style="background-image: url('https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=75')">
+      <p>모토벨릭스</p>
+      <h3>베스트 <em>상품전</em></h3>
+      <small>지금 가장 인기 있는 상품을 만나보세요.</small>
+      <span class="go">바로가기 →</span>
+    </div>
+    <div class="promo" onclick="goCategory('inside')" style="background-image: url('https://images.unsplash.com/photo-1605647381739-9bba88b1c5d1?w=800&q=75')">
+      <p>쾌적한 실내를 위한</p>
+      <h3>내부용품 <em>기획전</em></h3>
+      <small>편안함과 스타일을 동시에</small>
+      <span class="go">바로가기 →</span>
+    </div>
+    <div class="promo" onclick="goCategory('wash')" style="background-image: url('https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=75')">
+      <p>세차용품</p>
+      <h3>특별 할인전</h3>
+      <small>깨끗함이 주는 기분 좋은 변화</small>
+      <span class="go">바로가기 →</span>
+    </div>
+    <div class="promo small" onclick="goCategory('tools')" style="background-image: url('https://images.unsplash.com/photo-1504222490345-c075b6008014?w=600&q=75')">
+      <p>정비공구</p>
+      <h3>전문가의 선택</h3>
+      <small>믿을 수 있는 품질, 합리적인 가격</small>
+      <span class="go">바로가기 →</span>
+    </div>
+    <div class="promo small" onclick="goCategory('safety')" style="background-image: url('https://images.unsplash.com/photo-1765959106936-851735565c12?w=600&q=75')">
+      <p>블랙박스 &amp; 전자제품</p>
+      <h3>안전한 드라이브의 시작</h3>
+      <small>최첨단 기술로 더 안전하게</small>
+      <span class="go">바로가기 →</span>
+    </div>
+    <div class="promo small" onclick="goCategory('camping')" style="background-image: url('https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=600&q=75')">
+      <p>차박 &amp; 캠핑용품</p>
+      <h3>여행을 더 특별하게</h3>
+      <small>차에서도, 캠핑장에서도</small>
+      <span class="go">바로가기 →</span>
+    </div>
+    <div class="promo small" onclick="goCategory('tuning')" style="background-image: url('https://images.unsplash.com/photo-1611016186353-9af58c69a533?w=600&q=75')">
+      <p>튜닝용품</p>
+      <h3>나만의 스타일을 완성하다</h3>
+      <small>차별화된 드라이빙을 위한 선택</small>
+      <span class="go">바로가기 →</span>
+    </div>
+  </div>
 
-  <!-- 오른쪽 위 장바구니 아이콘 -->
-  <button class="cart-button" onclick="toggleCart()" aria-label="장바구니">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#ff8a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="9" cy="21" r="1"></circle>
-      <circle cx="20" cy="21" r="1"></circle>
-      <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
-    </svg>
-    <span class="cart-count" id="cart-count" hidden>0</span>
-  </button>
+  <!-- 상품 목록 -->
+  <section class="shop" id="shop">
+    <div class="inner">
+      <h2 class="section-title">전체 상품 <span class="slogan-small">DRIVE BETTER LIVE BOLDER</span></h2>
+
+      <!-- 카테고리 탭: 누르면 그 카테고리 상품만 보여줌 -->
+      <div class="tabs">
+        <a href="#" class="menu active" id="menu-all" onclick="showCategory('all'); return false;">전체상품 <span class="count"></span></a>
+        <!-- 카테고리 탭은 Supabase 상품을 불러온 뒤 여기에 들어감 -->
+        <span id="category-menus" style="display: contents"></span>
+      </div>
+
+      <!-- 검색했을 때 결과 안내 -->
+      <p class="search-result" id="search-result" hidden></p>
+
+      <!-- 상품 목록: Supabase에서 불러와서 자바스크립트가 채워 넣음 -->
+      <div id="product-area">
+        <p class="loading">상품을 불러오는 중이에요...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 맨 아래 -->
+  <footer id="contact">
+    <div class="inner">
+      <div class="footer-top">
+        <span class="logo">
+          <svg><use href="#logo-mark"></use></svg>
+          <span class="wordmark">MOTOVELI<span class="x">X</span></span>
+        </span>
+        <span class="about">자동차용품 전문 쇼핑몰 &nbsp;|&nbsp; 모토벨릭스</span>
+        <p class="slogan">DRIVE BETTER &nbsp; LIVE BOLDER</p>
+      </div>
+      <div class="footer-info">
+        <p>고객센터 1234-5678 (평일 10:00 ~ 18:00) &nbsp;·&nbsp; help@freemarket.com</p>
+        <p>사진 출처: <a href="https://unsplash.com">Unsplash</a> (무료 사용 가능)</p>
+        <p>© 2026 모토벨릭스 (MOTOVELIX)</p>
+      </div>
+    </div>
+  </footer>
 
   <!-- 장바구니 뒤 어두운 배경 (누르면 닫힘) -->
   <div class="overlay" id="overlay" onclick="toggleCart()"></div>
@@ -667,7 +1330,7 @@
   <!-- 장바구니 창 (오른쪽에서 나옴) -->
   <div class="cart-box" id="cart-box">
     <div class="cart-head">
-      <h3>🛒 장바구니</h3>
+      <h3>장바구니</h3>
       <button class="close-button" onclick="toggleCart()">✕</button>
     </div>
     <ul id="cart-list"></ul>
@@ -678,31 +1341,13 @@
     </div>
   </div>
 
-  <!-- 오른쪽 위 로그인 아이콘 (장바구니 아이콘 왼쪽) -->
-  <button class="account-button" id="account-button" onclick="toggleLogin()" aria-label="로그인">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#ff8a3d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="8" r="4"></circle>
-      <path d="M4 21a8 8 0 0 1 16 0"></path>
-    </svg>
-  </button>
-
-  <!-- 로그인하면 👤 아이콘 대신 보이는 로그아웃 버튼 -->
-  <button class="logout-top" id="logout-top" onclick="logOut()" hidden>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-      <polyline points="16 17 21 12 16 7"></polyline>
-      <line x1="21" y1="12" x2="9" y2="12"></line>
-    </svg>
-    로그아웃
-  </button>
-
   <!-- 로그인 창 뒤 어두운 배경 -->
   <div class="overlay" id="login-overlay" onclick="toggleLogin()"></div>
 
   <!-- 로그인 창 -->
   <div class="login-box" id="login-box" hidden>
     <div class="cart-head">
-      <h3 id="login-title">👤 로그인</h3>
+      <h3 id="login-title">로그인</h3>
       <button class="close-button" onclick="toggleLogin()">✕</button>
     </div>
 
@@ -770,11 +1415,6 @@
       cart = JSON.parse(localStorage.getItem("cart")) || [];
     } catch (e) {
       cart = [];
-    }
-
-    // 배너 버튼을 누르면 실행
-    function showEvent() {
-      alert("🎉 드라이브 시즌 할인 이벤트가 진행 중이에요!");
     }
 
     // 상품의 담기 버튼을 누르면 실행
@@ -896,12 +1536,12 @@
 
     // ===== 로그인 / 회원가입 / 로그아웃 =====
 
-    // 로그인 창 열기/닫기 (열 때는 항상 로그인 화면부터)
-    function toggleLogin() {
+    // 로그인 창 열기/닫기 (mode: "login" 또는 "signup", 없으면 로그인 화면)
+    function toggleLogin(mode) {
       let box = document.getElementById("login-box");
       box.hidden = !box.hidden;
       document.getElementById("login-overlay").classList.toggle("open");
-      if (!box.hidden) setMode("login");
+      if (!box.hidden) setMode(mode || "login");
     }
 
     // 로그인 화면 ↔ 회원가입 화면 바꾸기 (mode: "login" 또는 "signup")
@@ -915,15 +1555,16 @@
         el.hidden = isSignup;
       }
 
-      document.getElementById("login-title").textContent = isSignup ? "📝 회원가입" : "👤 로그인";
+      document.getElementById("login-title").textContent = isSignup ? "회원가입" : "로그인";
       document.getElementById("login-message").hidden = true;  // 이전 안내 문구 지우기
     }
 
     // 로그인 상태에 맞게 오른쪽 위 버튼 바꾸기
-    // 로그인 전: 👤 아이콘 / 로그인 후: 로그아웃 버튼
+    // 로그인 전: 로그인 · 회원가입 / 로그인 후: 로그아웃
     function showLoginState() {
       let loggedIn = (user !== null);
       document.getElementById("account-button").hidden = loggedIn;
+      document.getElementById("signup-button").hidden = loggedIn;
       document.getElementById("logout-top").hidden = !loggedIn;
     }
 
@@ -1088,20 +1729,79 @@
 
     // 메뉴를 누르면 해당 카테고리만 보여주기 ('all'이면 전체)
     function showCategory(id) {
+      clearSearch();
+
       let sections = document.querySelectorAll(".products");
       for (let section of sections) {
         section.hidden = !(id === "all" || section.id === id);
       }
 
-      // 누른 메뉴만 주황색으로
+      // 누른 탭만 검은색으로
       let menus = document.querySelectorAll(".menu");
       for (let menu of menus) {
         menu.classList.remove("active");
       }
       document.getElementById("menu-" + id).classList.add("active");
 
-      // 상품이 있는 곳으로 스크롤
-      document.querySelector(".products:not([hidden])").scrollIntoView();
+      // 상품 목록으로 스크롤
+      document.getElementById("shop").scrollIntoView();
+    }
+
+    // 카테고리 타일 · 기획전 배너를 누르면 실행
+    // 그 카테고리 상품이 있으면 보여주고, 아직 없으면 안내
+    function goCategory(code) {
+      if (code === "all" || document.getElementById("menu-" + code)) {
+        showCategory(code);
+      } else if (products.length === 0) {
+        showToast("상품을 불러오는 중이에요. 잠시 후 다시 눌러 주세요.");
+      } else {
+        showToast("준비 중인 카테고리예요. 곧 만나요!");
+      }
+    }
+
+    // ===== 검색 =====
+
+    // 검색창에 입력한 글자가 이름에 들어간 상품만 보여주기
+    function searchProducts() {
+      let word = document.getElementById("search-input").value.trim();
+      if (word === "") {
+        showCategory("all");
+        return;
+      }
+
+      let found = 0;
+      for (let section of document.querySelectorAll(".products")) {
+        let inSection = 0;
+        for (let card of section.querySelectorAll(".card")) {
+          let match = card.dataset.name.toLowerCase().includes(word.toLowerCase());
+          card.hidden = !match;
+          if (match) inSection++;
+        }
+        section.hidden = (inSection === 0);  // 찾은 상품이 없는 카테고리는 숨기기
+        found = found + inSection;
+      }
+
+      // 탭은 '전체상품'으로
+      for (let menu of document.querySelectorAll(".menu")) {
+        menu.classList.remove("active");
+      }
+      document.getElementById("menu-all").classList.add("active");
+
+      let result = document.getElementById("search-result");
+      result.innerHTML = "'" + escapeHtml(word) + "' 검색 결과 " + found + "개" +
+        (found === 0 ? " — 다른 단어로 찾아보세요." : "") +
+        "<a href='#' onclick=\"showCategory('all'); return false;\">검색 지우기</a>";
+      result.hidden = false;
+      document.getElementById("shop").scrollIntoView();
+    }
+
+    // 검색 결과를 지우고 모든 상품 카드 다시 보이기
+    function clearSearch() {
+      document.getElementById("search-input").value = "";
+      document.getElementById("search-result").hidden = true;
+      for (let card of document.querySelectorAll(".card")) {
+        card.hidden = false;
+      }
     }
 
     // 장바구니 창 열기/닫기
@@ -1152,9 +1852,6 @@
     }
 
     // ===== Supabase에서 상품 불러와서 보여주기 =====
-
-    // 카테고리별 제목 앞 이모지 (없는 카테고리는 📦)
-    const CATEGORY_EMOJI = { wash: "🧽", inside: "🧸", safety: "🔦" };
 
     let products = [];  // Supabase에서 불러온 상품들
 
@@ -1213,14 +1910,12 @@
       for (let c of categories) {
         let code = escapeHtml(c.code);
         let name = escapeHtml(c.name);
-        let emoji = CATEGORY_EMOJI[c.code] || "📦";
-
         menuHtml += "<a href='#' class='menu' id='menu-" + code + "' " +
           "onclick=\"showCategory('" + code + "'); return false;\">" +
           name + " <span class='count'></span></a>";
 
         areaHtml += "<section class='products' id='" + code + "'>" +
-          "<h2>" + emoji + " " + name + " <span class='count'></span></h2>" +
+          "<h2>" + name + " <span class='count'></span></h2>" +
           "<div class='card-list'>";
 
         for (let i = 0; i < products.length; i++) {
@@ -1237,12 +1932,12 @@
           }
 
           areaHtml +=
-            "<div class='card'>" +
+            "<div class='card' data-name='" + escapeHtml(p.name) + "'>" +
               "<img src='" + escapeHtml(p.image_url) + "' alt='" + escapeHtml(p.name) + "' loading='lazy'>" +
               "<h3>" + escapeHtml(p.name) + "</h3>" +
               oldPriceHtml +
               "<div class='price'>" + discountHtml + p.price.toLocaleString() + "원</div>" +
-              "<button onclick='addProduct(" + i + ")'>🛒 담기</button>" +
+              "<button onclick='addProduct(" + i + ")'>장바구니 담기</button>" +
             "</div>";
         }
 
